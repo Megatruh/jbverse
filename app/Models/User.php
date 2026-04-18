@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'status',
     ];
 
     /**
@@ -45,5 +47,22 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // 2. Tambahkan Fungsi Validasi Hak Akses
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isPengusaha(): bool
+    {
+        return $this->role === 'pengusaha' && $this->status === 'approved';
+    }
+
+    // 3. Relasi ke UMKM
+    public function umkm()
+    {
+        return $this->hasOne(Umkm::class);
     }
 }
