@@ -4,12 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Menu extends Model
 {
-    protected $fillable = ['umkm_id', 'name', 'category', 'description', 'images'];
+    // 1. Tambahkan 'slug' ke fillable
+    protected $fillable = ['umkm_id', 'name', 'slug', 'category', 'description', 'images'];
+
     protected $casts = ['images' => 'array'];
 
+    // Relasi (Tetap sama)
     public function umkm()
     {
         return $this->belongsTo(Umkm::class);
@@ -22,16 +26,31 @@ class Menu extends Model
     {
         return $this->hasMany(MenuCombination::class);
     }
-
-    // TAMBAHAN: Relasi ke tabel reviews
     public function reviews()
     {
         return $this->hasMany(Review::class);
     }
 
-    // TAMBAHAN: Fungsi untuk menghitung rating spesifik menu ini
-    public function getAverageRatingAttribute()
+    // 2. Fungsi otomatis pembuat Slug
+    protected static function booted()
     {
-        return $this->reviews()->avg('rating') ?? 0;
+        static::creating(function ($menu) {
+            $slug = Str::slug($menu->name);
+            $originalSlug = $slug;
+            $count = 1;
+
+            // PERUBAHAN: Cek keunikan slug berdasarkan umkm_id yang sama
+            while (static::where('umkm_id', $menu->umkm_id)->where('slug', $slug)->exists()) {
+                $slug = "{$originalSlug}-" . $count++;
+            }
+
+            $menu->slug = $slug;
+        });
+    }
+
+    // 3. Ubah kunci pencarian URL
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

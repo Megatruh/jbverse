@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Umkm extends Model
 {
-    protected $fillable = ['user_id', 'name', 'contact_number', 'description', 'is_open', 'image_banner'];
+    protected $fillable = ['user_id', 'name', 'slug', 'contact_number', 'description', 'is_open', 'image_banner'];
 
     public function user()
     {
@@ -21,17 +22,31 @@ class Umkm extends Model
     {
         return $this->belongsToMany(User::class, 'favorites');
     }
-
-    // PERUBAHAN BESAR DI SINI:
-    // Toko memiliki banyak ulasan "Melalui" Menu
     public function reviews()
     {
         return $this->hasManyThrough(Review::class, Menu::class);
     }
 
-    // Fungsi kalkulasi rating toko tetap bekerja seperti biasa!
-    public function getAverageRatingAttribute()
+    // 2. Fungsi otomatis pembuat Slug saat data disimpan
+    protected static function booted()
     {
-        return $this->reviews()->avg('rating') ?? 0;
+        static::creating(function ($umkm) {
+            $slug = Str::slug($umkm->name);
+            $originalSlug = $slug;
+            $count = 1;
+
+            // Cek apakah slug sudah ada di database (untuk mencegah duplikat)
+            while (static::where('slug', $slug)->exists()) {
+                $slug = "{$originalSlug}-" . $count++;
+            }
+
+            $umkm->slug = $slug;
+        });
+    }
+
+    // 3. Ubah kunci pencarian URL default Laravel dari 'id' menjadi 'slug'
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

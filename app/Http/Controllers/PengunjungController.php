@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Models\Menu;
 use App\Models\Review;
+use App\Models\Umkm;
 use Illuminate\Http\Request;
 
 class PengunjungController extends Controller
@@ -28,5 +31,14 @@ class PengunjungController extends Controller
 
         // 3. Kembalikan ke halaman sebelumnya dengan pesan sukses
         return redirect()->back()->with('success', 'Ulasan berhasil ditambahkan!');
+    }
+
+    public function detailMenu(Umkm $umkm, Menu $menu)
+    {
+        // Laravel otomatis memastikan $menu adalah milik $umkm
+        // Jika pengunjung mencoba jbverse.test/toko-a/menu-punya-toko-b, 
+        // Laravel akan otomatis memberikan error 404.
+
+        return view('public.menu-detail', compact('umkm', 'menu'));
     }
 }

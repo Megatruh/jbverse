@@ -13,10 +13,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('umkm_id')->constrained()->cascadeOnDelete();
             $table->string('name');
+            $table->string('slug');
             $table->string('category');
             $table->text('description');
             $table->json('images')->nullable();
             $table->timestamps();
+            // TAMBAHAN: Slug hanya boleh sama jika umkm_id berbeda
+            $table->unique(['umkm_id', 'slug']);
         });
     }
 
