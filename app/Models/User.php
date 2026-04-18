@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -21,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'slug',
         'password',
         'role',
         'status',
@@ -65,4 +67,26 @@ class User extends Authenticatable
     {
         return $this->hasOne(Umkm::class);
     }
-}
+
+    //Fungsi otomatis pembuat Slug saat registrasi
+    protected static function booted()
+    {
+        static::creating(function ($user) {
+            $slug = Str::slug($user->name);
+            $originalSlug = $slug;
+            $count = 1;
+
+            // Cek duplikat slug user di database
+            while (static::where('slug', $slug)->exists()) {
+                $slug = "{$originalSlug}-" . $count++;
+            }
+
+            $user->slug = $slug;
+        });
+    }
+
+    //Ubah pencarian default URL menjadi slug
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }}

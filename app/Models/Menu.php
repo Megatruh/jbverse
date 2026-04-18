@@ -39,7 +39,7 @@ class Menu extends Model
             $originalSlug = $slug;
             $count = 1;
 
-            // PERUBAHAN: Cek keunikan slug berdasarkan umkm_id yang sama
+            // PERHATIAN: Pengecekan duplikat DIBATASI HANYA PADA umkm_id milik menu ini
             while (static::where('umkm_id', $menu->umkm_id)->where('slug', $slug)->exists()) {
                 $slug = "{$originalSlug}-" . $count++;
             }
@@ -47,7 +47,7 @@ class Menu extends Model
             $menu->slug = $slug;
         });
     }
-
+    
     // 3. Ubah kunci pencarian URL
     public function getRouteKeyName()
     {

@@ -3,14 +3,16 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PengunjungController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Rute Halaman Utama (Katalog UMKM)
+Route::get('/', [PengunjungController::class, 'beranda'])->name('beranda');
 
-Route::get('/home', function () {
-    return view('home');
-});
+// Rute Detail Toko
+Route::get('/toko/{umkm:slug}', [PengunjungController::class, 'detailToko'])->name('toko.detail');
+
+// Rute Detail Menu (Scoped Binding)
+Route::get('/toko/{umkm:slug}/{menu:slug}', [PengunjungController::class, 'detailMenu'])->name('menu.detail');
 
 // ... (Rute bawaan Breeze)
 
