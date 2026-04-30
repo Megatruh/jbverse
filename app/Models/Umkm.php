@@ -8,7 +8,16 @@ use Illuminate\Support\Str;
 
 class Umkm extends Model
 {
-    protected $fillable = ['user_id', 'name', 'slug', 'contact_number', 'description', 'is_open', 'image_banner'];
+    protected $fillable = [
+        'user_id', 
+        'name', 
+        'slug', 
+        'contact_number', 
+        'description', 
+        'is_open', 
+        'image_banner',
+        'logo',
+    ];
 
     public function user()
     {

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Umkm;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 
 class AuthController extends Controller
 {
@@ -19,46 +21,37 @@ class AuthController extends Controller
     // Memproses data pendaftaran
     public function registerPengusaha(Request $request)
     {
-        // 1. Validasi Inputan
+        // 1. Validasi Inputan (Foto dan Kontak dihilangkan dari kewajiban awal)
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', Rules\Password::defaults()],
+            'password' => ['required', Password::defaults()],
             'umkm_name' => ['required', 'string', 'max:255'],
-            'contact_number' => ['required', 'string', 'max:20'],
             'description' => ['required', 'string'],
-            'image_banner' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'], // Maksimal 2MB
         ]);
 
-        // 2. Proses Upload Foto Bukti Gerai
-        // File akan disimpan di folder storage/app/public/umkm_banners
-        $imagePath = null;
-        if ($request->hasFile('image_banner')) {
-            $imagePath = $request->file('image_banner')->store('umkm_banners', 'public');
-        }
-
-        // 3. Simpan Kredensial ke tabel `users`
+        // 2. Simpan Kredensial ke tabel `users`
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'pengusaha',
-            'status' => 'pending', // PENTING: Kunci akun agar tidak bisa login langsung
+            'status' => 'pending', 
         ]);
 
-        // 4. Simpan Profil Toko ke tabel `umkms`
+        // 3. Simpan Profil Toko (Data awal) ke tabel `umkms`
         Umkm::create([
-            'user_id' => $user->id, // Hubungkan dengan user yang baru dibuat di atas
+            'user_id' => $user->id, 
             'name' => $request->umkm_name,
-            'contact_number' => $request->contact_number,
+            'contact_number' => '', // Dikosongkan dulu, diisi setelah login
             'description' => $request->description,
-            'image_banner' => $imagePath,
-            'is_open' => false, // Toko baru belum boleh jualan
+            'is_open' => false, 
         ]);
 
-        // 5. Arahkan pengguna (Redirect)
-        // Karena statusnya masih 'pending', kita jangan panggil auth()->login($user).
-        // Arahkan ke halaman login dengan pesan sukses.
-        return redirect()->route('login')->with('status', 'Pendaftaran berhasil! Akun Anda sedang ditinjau oleh Admin. Silakan tunggu konfirmasi.');
+        // 4. Langsung Login agar bisa melengkapi data
+        Auth::login($user);
+
+        // 5. Arahkan ke dashboard pengusaha
+        return redirect()->route('pengusaha.dashboard');
     }
 }

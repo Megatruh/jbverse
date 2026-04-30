@@ -1,3 +1,4 @@
+// pengajuan  usaha
 <x-guest-layout>
     <div class="mb-4 text-sm text-gray-600">
         {{ __('Daftar sebagai Mitra JBVerse. Akun Anda akan ditinjau oleh Admin sebelum diaktifkan.') }}

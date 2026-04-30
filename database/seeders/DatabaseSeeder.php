@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Budi Pengusaha',
             'email' => 'budi@jbverse.test',
             'password' => Hash::make('password123'),
-            'role' => 'pengusaha',
+            'role' => 'pengusaha',  
             'status' => 'approved',
         ]);
 
