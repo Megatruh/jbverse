@@ -70,6 +70,12 @@
 				</div>
 			@endif
 
+			@if (session('error'))
+				<div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+					{{ session('error') }}
+				</div>
+			@endif
+
 			<div class="bg-white shadow-sm sm:rounded-lg overflow-hidden">
 				<div class="relative">
 					<div class="h-44 sm:h-56 bg-gradient-to-r from-indigo-600 to-sky-500">
@@ -154,17 +160,26 @@
 										<h3 class="mt-1 text-2xl sm:text-3xl font-bold tracking-tight text-white drop-shadow-md">
 											{{ $umkm->name }}
 										</h3>
+										<p class="mt-1 text-xs text-white/90 drop-shadow-sm md:hidden truncate">
+											Status: <span class="font-medium text-white">{{ strtoupper($user->status ?? 'approved') }}</span>
+											• Toko:
+											@if ($umkm->is_open)
+												<span class="font-medium text-emerald-300">Buka</span>
+											@else
+												<span class="font-medium text-amber-300">Tutup</span>
+											@endif
+										</p>
 										<div class="mt-2 flex flex-wrap items-center gap-2 text-sm text-white/90 drop-shadow-sm">
 											<span class="inline-flex items-center rounded-full bg-black/30 backdrop-blur-sm px-2.5 py-1 border border-white/10">
 												Pemilik: <span class="ml-1 font-medium text-white">{{ $user->name }}</span>
 											</span>
 
-											<span class="inline-flex items-center rounded-full bg-black/30 backdrop-blur-sm px-2.5 py-1 border border-white/10">
+											<span class="hidden md:inline-flex items-center rounded-full bg-black/30 backdrop-blur-sm px-2.5 py-1 border border-white/10">
 												Status akun:
 												<span class="ml-1 font-medium text-white">{{ strtoupper($user->status ?? 'approved') }}</span>
 											</span>
 
-											<span class="inline-flex items-center rounded-full bg-black/30 backdrop-blur-sm px-2.5 py-1 border border-white/10">
+											<span class="hidden md:inline-flex items-center rounded-full bg-black/30 backdrop-blur-sm px-2.5 py-1 border border-white/10">
 												Toko:
 												@if ($umkm->is_open)
 													<span class="ml-1 font-medium text-emerald-300">Buka</span>
@@ -206,10 +221,10 @@
 							<p class="mt-1 text-sm text-gray-500">Informasi ini tampil di halaman publik tokomu.</p>
 
 							<dl class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-								<div class="rounded-lg border border-gray-200 p-4">
+								{{-- <div class="rounded-lg border border-gray-200 p-4">
 									<dt class="text-xs font-medium uppercase tracking-wide text-gray-500">Slug</dt>
 									<dd class="mt-1 text-sm font-semibold text-gray-900">{{ $umkm->slug }}</dd>
-								</div>
+								</div> --}}
 								<div class="rounded-lg border border-gray-200 p-4">
 									<dt class="text-xs font-medium uppercase tracking-wide text-gray-500">Kontak</dt>
 									<dd class="mt-1 text-sm font-semibold text-gray-900">{{ $umkm->contact_number }}</dd>

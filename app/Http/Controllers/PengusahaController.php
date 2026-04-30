@@ -20,13 +20,18 @@ class PengusahaController extends Controller
         if (!$umkm) {
             abort(404, 'Data UMKM tidak ditemukan untuk akun ini.');
         }
+
+        // KONDISI 1: Jika status Suspended
+        if ($user->status === 'suspended') {
+            return view('pengusaha.suspended', compact('user', 'umkm'));
+        }
         
-        // KONDISI 1: Cek apakah data krusial belum diisi (misal: contact_number masih kosong atau belum ada foto)
-        if (empty($umkm->contact_number) || empty($umkm->image_banner)) {
-            // Arahkan ke halaman form pelengkapan profil (kamu perlu buat view ini nanti)
+        // KONDISI 2: Cek apakah data krusial belum diisi
+        if (empty($umkm->contact_number) || empty($umkm->description) || empty($umkm->image_banner)) {
             return view('pengusaha.lengkapi_profil', compact('umkm'));
         }
-        // KONDISI 2: Data sudah lengkap, tapi Admin belum approve
+
+        // KONDISI 3: Menunggu approval dari admin
         if ($user->status === 'pending') {
             return view('pengusaha.waiting_approval');
         }
@@ -153,6 +158,25 @@ class PengusahaController extends Controller
         $umkm->save();
 
         return redirect()->route('pengusaha.dashboard')->with('status', 'Profil UMKM berhasil diperbarui!');
+    }
+
+    /**
+     * Mengajukan pengaktifan kembali
+     */
+    public function requestReactivate()
+    {
+        $user = Auth::user();
+        
+        // Kita ubah statusnya kembali ke 'pending' agar muncul di daftar verifikasi Admin
+        // Tapi kamu bisa tambahkan kolom 'pesan_banding' di database jika perlu
+        $user->update(['status' => 'pending']); 
+
+        return redirect()
+        ->route('pengusaha.dashboard')
+        ->with(
+            'status', 
+            'Permintaan aktivasi ulang telah dikirim ke Admin.'
+        );
     }
 
     

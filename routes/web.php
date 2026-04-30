@@ -27,14 +27,17 @@ Route::post('/register-mitra', [AuthController::class, 'registerPengusaha'])
     ->middleware('guest')
     ->name('register.pengusaha.store');
 
-
 Route::get('/dashboard', function () {
-    $role = Auth::user()->role;
-    if($role === 'admin'){
+    $user = Auth::user();
+
+    if ($user?->role === 'admin') {
         return redirect()->route('admin.dashboard');
-    } elseif($role == 'pengusaha') {
+    }
+
+    if ($user?->role === 'pengusaha') {
         return redirect()->route('pengusaha.dashboard');
     }
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -46,41 +49,58 @@ Route::middleware('auth')->group(function () {
 
 
 //kerjaan Farhan : 
-Route::middleware(['auth', 'pengusaha'])->group(function(){
+Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.')->group(function(){
     // atur routes ke dashboard pengusaha
-    Route::get('/pengusaha/dashboard', [
+    Route::get('/dashboard', [
         PengusahaController::class, 
         'dashboard'
-    ])->name('pengusaha.dashboard');
+    ])->name('dashboard');
 
     // Rute untuk submit pelengkapan profil
-    Route::patch('/pengusaha/lengkapi-profil', [
+    Route::patch('/lengkapi-profil', [
         PengusahaController::class, 
         'simpanProfil'
-    ])->name('pengusaha.simpan_profil');
+    ])->name('simpan_profil');
 
     // Toggle status buka/tutup toko
-    Route::patch('/pengusaha/toko/toggle-status', [
+    Route::patch('/toko/toggle-status', [
         PengusahaController::class,
         'toggleStatus'
-    ])->name('pengusaha.toggle_status');
-    
+    ])->name('toggle_status');
+
     // Tambahkan ini
-    Route::get('/pengusaha/edit', [
+    Route::get('/edit', [
         PengusahaController::class, 
         'edit'
-    ])->name('pengusaha.edit');
+    ])->name('edit');
 
-    Route::patch('/pengusaha/update', [
+    Route::patch('/update', [
         PengusahaController::class, 
         'update'
-    ])->name('pengusaha.update');
+    ])->name('update');
+
+    // pengusaha yang mau aktivasi kembali akun yang tersuspend
+    Route::post('/request-reactivate', [
+        PengusahaController::class, 
+        'requestReactivate'
+    ])->name('request_reactivate');
 });
 
-Route::middleware(['auth','admin'])->group(function(){
-    Route::get('/admin/dashboard', [
+Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(function(){
+    Route::get('/dashboard', [
         AdminController::class,
         'dashboard',
-    ])->name('admin.dashboard');
+    ])->name('dashboard');
+    // Aksi ACC dan Suspend
+    //aksi aprrove umkm
+    Route::patch('approve/{id}', [
+        AdminController::class, 
+        'approve'
+    ])->name('approve');
+    //aksi suspend umkm
+    Route::patch('suspend/{id}', [
+        AdminController::class, 
+        'suspend'
+    ])->name('suspend');
 });
 require __DIR__.'/auth.php';

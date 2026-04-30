@@ -17,7 +17,7 @@
 
                     <div class="mt-4">
                         <x-input-label for="description" value="Deskripsi Toko" />
-                        <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4">{{ old('description', $umkm->description) }}</textarea>
+                        <textarea id="description" name="description" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" rows="4" required>{{ old('description', $umkm->description) }}</textarea>
                     </div>
 
                     <div class="mt-4">

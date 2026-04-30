@@ -17,6 +17,17 @@ class EnsureTrader
     public function handle(Request $request, Closure $next): Response
     {
         if(Auth::check() && Auth::user()->role === 'pengusaha'){
+            if (Auth::user()->status === 'suspended' && 
+                !$request->is('pengusaha/dashboard') &&
+                !$request->is('pengusaha/request-reactivate'))
+                {
+                return redirect()
+                ->route('pengusaha.dashboard')
+                ->with(
+                    'error', 
+                    'Akun anda sedang dibekukan. Silahkan hubungi admin untuk aktivasi kembali'
+                );
+            }
             return $next($request);
         }
         // Jika bukan pengusaha, blokir akses
