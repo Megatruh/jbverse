@@ -1,4 +1,5 @@
 <x-layouts.public>
+    {{-- <x-app-layout> --}}
     <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
         
         <a href="{{ route('toko.detail', $umkm->slug) }}" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium inline-flex items-center mb-6 transition">
@@ -244,3 +245,4 @@
         })
     </script>
 </x-layouts.public>
+{{-- </x-app-layout> --}}

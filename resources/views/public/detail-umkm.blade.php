@@ -1,4 +1,5 @@
-<x-layouts.public>
+{{-- <x-layouts.public> --}}
+<x-app-layout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8 md:flex relative">
@@ -53,4 +54,5 @@
             @endforelse
         </div>
     </div>
-</x-layouts.public>
+{{-- </x-layouts.public> --}}
+</x-app-layout>
