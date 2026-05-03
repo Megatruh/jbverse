@@ -110,10 +110,14 @@ Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.'
         
     Route::delete('/menu/{menu}', [
         PengusahaController::class, 
+<<<<<<< HEAD
         'destroyMenu'])->name('menu.destroy');  
     
     Route::post('/ulasan/{review}/balas', [PengusahaController::class, 'balasUlasan'])->name('ulasan.balas');
     Route::delete('/ulasan/{review}/balas', [PengusahaController::class, 'hapusBalasan'])->name('ulasan.hapus-balasan');
+=======
+        'destroyMenu'])->name('menu.destroy');        
+>>>>>>> 040fe2fea0b18762f497142140af0480122196ca
 });
 
 Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(function(){

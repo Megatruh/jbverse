@@ -42,6 +42,7 @@ class MenuSeeder extends Seeder
             $name = $menuData['name'];
             $desiredSlug = Str::slug($name);
 
+<<<<<<< HEAD
             $menu = Menu::firstOrNew(['umkm_id' => $umkm->id, 'name' => $name]);
             $menu->category = $menuData['category'];
             $menu->description = $menuData['description'];
@@ -57,6 +58,19 @@ class MenuSeeder extends Seeder
             $count = 1;
             while (
                 Menu::query()
+=======
+        // --- TAMBAHAN BARU: Isi field yang sebelumnya kosong ---
+        $menu->ukuran = 'Reguler';
+        $menu->variant = 'Dingin';
+        $menu->price = 18000;
+        // -------------------------------------------------------
+
+        // Pastikan slug unik per UMKM (ada unique index [umkm_id, slug]).
+        $slug = $desiredSlug;
+        $count = 1;
+        while (
+            Menu::query()
+>>>>>>> 040fe2fea0b18762f497142140af0480122196ca
                 ->where('umkm_id', $umkm->id)
                 ->where('slug', $slug)
                 ->when($menu->exists, fn($q) => $q->where('id', '!=', $menu->id))
