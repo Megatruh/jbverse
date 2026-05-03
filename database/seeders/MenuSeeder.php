@@ -27,6 +27,12 @@ class MenuSeeder extends Seeder
         $menu->category = 'Minuman';
         $menu->description = 'Perpaduan espresso dan gula aren asli.';
 
+        // --- TAMBAHAN BARU: Isi field yang sebelumnya kosong ---
+        $menu->ukuran = 'Reguler';
+        $menu->variant = 'Dingin';
+        $menu->price = 18000;
+        // -------------------------------------------------------
+
         // Pastikan slug unik per UMKM (ada unique index [umkm_id, slug]).
         $slug = $desiredSlug;
         $count = 1;

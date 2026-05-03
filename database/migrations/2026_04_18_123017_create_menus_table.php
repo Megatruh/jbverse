@@ -14,9 +14,13 @@ return new class extends Migration
             $table->foreignId('umkm_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('slug');
+            $table->string('ukuran')->nullable();    // Kolom baru
+            $table->string('variant')->nullable();
             $table->string('category');
             $table->text('description');
-            $table->json('images')->nullable();
+            // Simpel: 1 foto menu (path di storage/app/public/menu_images)
+            $table->string('image')->nullable();
+            $table->integer('price');
             $table->timestamps();
             // TAMBAHAN: Slug hanya boleh sama jika umkm_id berbeda
             $table->unique(['umkm_id', 'slug']);

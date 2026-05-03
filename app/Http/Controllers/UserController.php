@@ -21,14 +21,14 @@ class UserController extends Controller
     public function detailToko(Umkm $umkm)
     {
         abort_if(!$umkm->is_open, 404, 'Toko sedang tutup.');
-        $menus = $umkm->menus()->with('variantCategories')->latest()->get();
+        $menus = $umkm->menus()->latest()->get();
         return view('public.detail-umkm', compact('umkm', 'menus'));
     }
 
     public function detailMenu(Umkm $umkm, Menu $menu)
     {
         abort_if($menu->umkm_id !== $umkm->id, 404);
-        $menu->load(['variantCategories.options', 'menuCombinations.options', 'reviews.user']);
+        $menu->load(['reviews.user']);
         return view('public.detail-menu', compact('umkm', 'menu'));
     }
 

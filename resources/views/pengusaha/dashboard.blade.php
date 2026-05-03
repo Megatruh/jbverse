@@ -90,58 +90,6 @@
 					</div>
 
 					<div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
-
-					{{-- <div class="absolute bottom-0 left-0 right-0">
-						<div class="px-6 py-5">
-							<div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-								<div>
-									<p class="text-sm text-white/80">Selamat datang,</p>
-									<h3 class="mt-1 text-2xl sm:text-3xl font-semibold tracking-tight text-white">
-										{{ $umkm->name }}
-									</h3>
-									<div class="mt-2 flex flex-wrap items-center gap-2 text-sm text-white/85">
-										<span class="inline-flex items-center rounded-full bg-white/15 px-2.5 py-1">
-											Pemilik: <span class="ml-1 font-medium text-white">{{ $user->name }}</span>
-										</span>
-
-										<span class="inline-flex items-center rounded-full bg-white/15 px-2.5 py-1">
-											Status akun:
-											<span class="ml-1 font-medium text-white">{{ strtoupper($user->status ?? 'approved') }}</span>
-										</span>
-
-										<span class="inline-flex items-center rounded-full bg-white/15 px-2.5 py-1">
-											Toko:
-											@if ($umkm->is_open)
-												<span class="ml-1 font-medium text-emerald-200">Buka</span>
-											@else
-												<span class="ml-1 font-medium text-amber-200">Tutup</span>
-											@endif
-										</span>
-									</div>
-								</div>
-
-								<div class="flex flex-wrap items-center gap-2">
-									<a
-										href="{{ route('pengusaha.edit') }}"
-										class="inline-flex items-center justify-center rounded-md bg-white/15 px-3 py-2 text-sm font-medium text-white ring-1 ring-inset ring-white/25 hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/40"
-									>
-										Edit Profil UMKM
-									</a>
-
-									@if ($waLink)
-										<a
-											href="{{ $waLink }}"
-											target="_blank"
-											rel="noopener noreferrer"
-											class="inline-flex items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-900 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-white/40"
-										>
-											Hubungi via WhatsApp
-										</a>
-									@endif
-								</div>
-							</div>
-						</div>
-					</div> --}}
                     <div class="absolute bottom-0 left-0 right-0">
 						<div class="px-6 py-5">
 							<div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -221,10 +169,6 @@
 							<p class="mt-1 text-sm text-gray-500">Informasi ini tampil di halaman publik tokomu.</p>
 
 							<dl class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-								{{-- <div class="rounded-lg border border-gray-200 p-4">
-									<dt class="text-xs font-medium uppercase tracking-wide text-gray-500">Slug</dt>
-									<dd class="mt-1 text-sm font-semibold text-gray-900">{{ $umkm->slug }}</dd>
-								</div> --}}
 								<div class="rounded-lg border border-gray-200 p-4">
 									<dt class="text-xs font-medium uppercase tracking-wide text-gray-500">Kontak</dt>
 									<dd class="mt-1 text-sm font-semibold text-gray-900">{{ $umkm->contact_number }}</dd>
@@ -243,20 +187,20 @@
 							<p class="mt-1 text-sm text-indigo-800/80">Beberapa fitur akan muncul saat route sudah dibuat.</p>
 
 							<div class="mt-4 grid gap-2">
-								<div
-									class="flex items-center justify-between rounded-md bg-white/70 px-3 py-2 text-sm font-medium text-gray-400 ring-1 ring-inset ring-gray-200"
-									title="Fitur pengelolaan menu belum tersedia"
+								<a
+									href="{{ route('pengusaha.menu.index') }}"
+									class="flex items-center justify-between rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50 transition"
 								>
 									Kelola Menu
-									<span>—</span>
-								</div>
+									<span class="text-gray-400">→</span>
+								</a>
 
 								<a
-									href="{{ route('toko.detail', $umkm) }}"
-									class="inline-flex items-center justify-between rounded-md bg-white px-3 py-2 text-sm font-medium text-gray-800 shadow-sm ring-1 ring-inset ring-gray-200 hover:bg-gray-50"
+									href="{{ route('pengusaha.menu.create') }}"
+									class="flex items-center justify-between rounded-md bg-white px-3 py-2 text-sm font-medium text-indigo-700 shadow-sm ring-1 ring-inset ring-indigo-200 hover:bg-indigo-50 transition"
 								>
-									Preview Halaman Toko
-									<span class="text-gray-400">→</span>
+									Tambah Menu Baru
+									<span class="text-indigo-500 font-bold">+</span>
 								</a>
 
 								<form method="POST" action="{{ route('logout') }}" class="mt-2">

@@ -18,7 +18,7 @@
             </div>
         @endif
 
-        <div x-data="kalkulatorMenu(@json($menu->menuCombinations->load('options')))" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             
             <div class="p-8 border-b border-gray-100">
                 <h1 class="text-3xl font-extrabold text-gray-900">{{ $menu->name }}</h1>
@@ -29,44 +29,34 @@
             </div>
 
             <div class="p-8 bg-gray-50">
-                <h3 class="text-lg font-bold text-gray-900 mb-5">Pilih Varian</h3>
-                
-                @if($menu->variantCategories->isEmpty())
-                    <p class="text-gray-500 text-sm bg-white p-4 rounded-lg border border-gray-200">Menu ini tidak memiliki varian tambahan.</p>
-                @else
-                    <div class="space-y-6">
-                        @foreach($menu->variantCategories as $category)
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 mb-3">
-                                    {{ $category->name }} {!! $category->is_required ? '<span class="text-red-500">*</span>' : '' !!}
-                                </label>
-                                <div class="flex flex-wrap gap-3">
-                                    @foreach($category->options as $option)
-                                        <button 
-                                            type="button" 
-                                            @click="pilihOpsi({{ $category->id }}, {{ $option->id }})"
-                                            :class="opsiTerpilih[{{ $category->id }}] === {{ $option->id }} ? 'bg-indigo-600 text-white border-indigo-600 shadow-md' : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-400 hover:bg-indigo-50'"
-                                            class="border px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                                        >
-                                            {{ $option->name }}
-                                        </button>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
+                <h3 class="text-lg font-bold text-gray-900 mb-5">Detail Menu</h3>
 
-                <div class="mt-8 p-6 bg-white rounded-xl border border-indigo-100 text-center shadow-sm relative overflow-hidden">
-                    <div class="absolute inset-0 bg-indigo-50 opacity-50"></div>
-                    <div class="relative z-10">
-                        <p class="text-sm text-indigo-800 font-semibold mb-1">Total Harga Kombinasi</p>
-                        <div class="h-12 flex items-center justify-center">
-                            <p x-show="harga !== null" class="text-4xl font-extrabold text-indigo-600" x-text="'Rp ' + new Intl.NumberFormat('id-ID').format(harga)"></p>
-                            <p x-show="harga === null" class="text-sm text-gray-500 italic bg-white px-3 py-1 rounded border border-gray-200">Silakan lengkapi pilihan varian di atas</p>
-                        </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Ukuran</p>
+                        <p class="mt-1 text-sm font-bold text-gray-900">
+                            {{ $menu->ukuran ?: '-' }}
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Varian</p>
+                        <p class="mt-1 text-sm font-bold text-gray-900">
+                            {{ $menu->variant ?: '-' }}
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-xl border border-indigo-100 p-4 shadow-sm">
+                        <p class="text-xs font-semibold text-indigo-700 uppercase tracking-wider">Harga</p>
+                        <p class="mt-1 text-xl font-extrabold text-indigo-600">
+                            Rp {{ number_format($menu->price, 0, ',', '.') }}
+                        </p>
                     </div>
                 </div>
+
+                @if($menu->image)
+                    <div class="mt-6">
+                        <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" class="w-full max-h-80 object-cover rounded-xl border border-gray-200 shadow-sm" />
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -218,31 +208,5 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('kalkulatorMenu', (dataKombinasiDariDatabase) => ({
-                opsiTerpilih: {}, 
-                harga: null,
-                kombinasi: dataKombinasiDariDatabase,
-
-                pilihOpsi(idKategori, idOpsi) {
-                    this.opsiTerpilih[idKategori] = idOpsi;
-                    this.hitungHarga();
-                },
-
-                hitungHarga() {
-                    const idOpsiAktif = Object.values(this.opsiTerpilih).map(Number).sort();
-
-                    const match = this.kombinasi.find(item => {
-                        const idOpsiDiDatabase = item.options.map(opt => opt.id).sort();
-                        if (idOpsiAktif.length !== idOpsiDiDatabase.length) return false;
-                        return idOpsiAktif.every((val, index) => val === idOpsiDiDatabase[index]);
-                    });
-
-                    this.harga = match ? match.price : null;
-                }
-            }))
-        })
-    </script>
 </x-layouts.public>
 {{-- </x-app-layout> --}}
