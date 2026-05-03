@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Review;
 use App\Models\Umkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,29 @@ class PengusahaController extends Controller
     /**
      * Menampilkan Dashboard Utama Pengusaha
      */
+
+    public function balasUlasan(Request $request, Review $review)
+    {
+        // 1. Pastikan ulasan ini adalah milik menu dari UMKM pengusaha tersebut
+        abort_if($review->menu->umkm_id !== $request->user()->umkm->id, 403);
+
+        // 2. REVISI: Cek apakah sudah pernah dibalas sebelumnya
+        if ($review->reply !== null) {
+            return redirect()->back()->with('error', 'Anda sudah membalas ulasan ini sebelumnya.');
+        }
+
+        $request->validate([
+            'reply' => 'required|string|max:1000',
+        ]);
+
+        // 3. Simpan balasan
+        $review->update([
+            'reply' => $request->reply,
+        ]);
+
+        return redirect()->back()->with('success', 'Balasan berhasil dikirim.');
+    }
+
     public function dashboard()
     {
         $user = Auth::user();
@@ -25,7 +49,7 @@ class PengusahaController extends Controller
         if ($user->status === 'suspended') {
             return view('pengusaha.suspended', compact('user', 'umkm'));
         }
-        
+
         // KONDISI 2: Cek apakah data krusial belum diisi
         if (empty($umkm->contact_number) || empty($umkm->description) || empty($umkm->image_banner)) {
             return view('pengusaha.lengkapi_profil', compact('umkm'));
@@ -166,18 +190,16 @@ class PengusahaController extends Controller
     public function requestReactivate()
     {
         $user = Auth::user();
-        
+
         // Kita ubah statusnya kembali ke 'pending' agar muncul di daftar verifikasi Admin
         // Tapi kamu bisa tambahkan kolom 'pesan_banding' di database jika perlu
-        $user->update(['status' => 'pending']); 
+        $user->update(['status' => 'pending']);
 
         return redirect()
-        ->route('pengusaha.dashboard')
-        ->with(
-            'status', 
-            'Permintaan aktivasi ulang telah dikirim ke Admin.'
-        );
+            ->route('pengusaha.dashboard')
+            ->with(
+                'status',
+                'Permintaan aktivasi ulang telah dikirim ke Admin.'
+            );
     }
-
-    
 }

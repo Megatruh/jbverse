@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    // PERUBAHAN: Ganti umkm_id jadi menu_id
+    use HasFactory;
     protected $fillable = [
         'user_id',
         'menu_id', 
         'rating', 
-        'comment'
+        'comment',
+        'reply'
         ];
 
     public function user()

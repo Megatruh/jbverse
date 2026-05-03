@@ -31,5 +31,14 @@ class UserSeeder extends Seeder
                 'status' => 'approved',
             ]
         );
+
+        User::create([
+            'name' => 'Pengunjung Setia',
+            'slug' => 'pengunjung-setia',
+            'email' => 'user@jbverse.com',
+            'password' => Hash::make('password123'),
+            'role' => 'user',
+            'status' => 'approved',
+        ]);
     }
 }

@@ -5,17 +5,35 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PengunjungController;
 use App\Http\Controllers\PengusahaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Rute Halaman Utama (Katalog UMKM)
-Route::get('/', [PengunjungController::class, 'beranda'])->name('beranda');
+Route::get('/', [UserController::class, 'beranda'])->name('public.beranda');
 
 // Rute Detail Toko
-Route::get('/toko/{umkm:slug}', [PengunjungController::class, 'detailToko'])->name('toko.detail');
+Route::get('/toko/{umkm:slug}', [UserController::class, 'detailToko'])->name('toko.detail');
 
 // Rute Detail Menu (Scoped Binding)
-Route::get('/toko/{umkm:slug}/{menu:slug}', [PengunjungController::class, 'detailMenu'])->name('menu.detail');
+Route::get('/toko/{umkm:slug}/{menu:slug}', [UserController::class, 'detailMenu'])->name('menu.detail');
+
+//rute user
+Route::middleware(['auth', 'user'])->group(function () {
+    Route::post('/toko/{umkm:slug}/{menu:slug}/ulasan', [UserController::class, 'kirimUlasan'])->name('ulasan.store');
+    Route::post('/toko/{umkm:slug}/lapor', [UserController::class, 'laporUmkm'])->name('lapor.store');
+    Route::put('/ulasan/{review}', [UserController::class, 'updateUlasan'])->name('ulasan.update');
+    Route::delete('/ulasan/{review}', [UserController::class, 'hapusUlasan'])->name('ulasan.destroy');
+});
+
+// // Rute Halaman Utama (Katalog UMKM)
+// Route::get('/', [PengunjungController::class, 'beranda'])->name('beranda');
+
+// // Rute Detail Toko
+// Route::get('/toko/{umkm:slug}', [PengunjungController::class, 'detailToko'])->name('toko.detail');
+
+// // Rute Detail Menu (Scoped Binding)
+// Route::get('/toko/{umkm:slug}/{menu:slug}', [PengunjungController::class, 'detailMenu'])->name('menu.detail');
 
 // ... (Rute bawaan Breeze)
 

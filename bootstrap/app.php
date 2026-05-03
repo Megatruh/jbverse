@@ -2,20 +2,22 @@
 
 use App\Http\Middleware\EnsureAdmin;
 use App\Http\Middleware\EnsureTrader;
+use App\Http\Middleware\RoleUser;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'pengusaha'=>EnsureTrader::class,
-            'admin'=>EnsureAdmin::class,
+            'user' => RoleUser::class,
+            'pengusaha' => EnsureTrader::class,
+            'admin' => EnsureAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

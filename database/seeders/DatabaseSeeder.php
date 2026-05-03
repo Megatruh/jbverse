@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
             MenuSeeder::class,
             VariantSeeder::class,
             MenuCombinationSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }

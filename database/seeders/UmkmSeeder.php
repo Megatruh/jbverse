@@ -29,6 +29,18 @@ class UmkmSeeder extends Seeder
         $umkm->description = 'Kopi mantap jiwa untuk menemani senja.';
         $umkm->is_open = true;
 
+        $pengusaha = User::query()->where('email', 'owner@coffee.com')->first();
+
+        if ($pengusaha) {
+            Umkm::create([
+                'user_id' => $pengusaha->id,
+                'name' => 'JO.Coffee Roastery',
+                'contact_number' => '081234567890',
+                'description' => 'Menyediakan biji kopi pilihan dari seluruh nusantara dengan metode roasting terbaik.',
+                'is_open' => true,
+            ]);
+        }
+
         // Pastikan slug konsisten (model hanya auto-slug saat creating).
         $slug = $desiredSlug;
         $count = 1;
@@ -43,5 +55,8 @@ class UmkmSeeder extends Seeder
         $umkm->slug = $slug;
 
         $umkm->save();
+
+        Umkm::factory(8)->create();
+
     }
 }
