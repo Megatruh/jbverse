@@ -12,10 +12,12 @@ class UserController extends Controller
 {
     public function beranda()
     {
+        $menus = Menu::query()
+            ->with(['umkm', 'menuCombinations', 'reviews'])
+            ->latest()
+            ->paginate(12);
         
-        $umkms = Umkm::query()->where('is_open', true)->latest()->paginate(12);
-        
-        return view('public.beranda', compact('umkms'));
+        return view('public.beranda', compact('menus'));
     }
 
     public function detailToko(Umkm $umkm)

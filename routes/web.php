@@ -103,6 +103,9 @@ Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.'
         PengusahaController::class, 
         'requestReactivate'
     ])->name('request_reactivate');
+
+    Route::post('/ulasan/{review}/balas', [PengusahaController::class, 'balasUlasan'])->name('ulasan.balas');
+    Route::delete('/ulasan/{review}/balas', [PengusahaController::class, 'hapusBalasan'])->name('ulasan.hapus-balasan');
 });
 
 Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(function(){
@@ -121,5 +124,8 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         AdminController::class, 
         'suspend'
     ])->name('suspend');
+
+    Route::get('/laporan', [AdminController::class, 'kelolaLaporan'])->name('laporan.index');
+    Route::patch('/laporan/{report}', [AdminController::class, 'prosesLaporan'])->name('laporan.proses');
 });
 require __DIR__.'/auth.php';

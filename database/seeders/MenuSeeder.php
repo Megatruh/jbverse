@@ -20,27 +20,47 @@ class MenuSeeder extends Seeder
             return;
         }
 
-        $name = 'Kopi Susu Gula Aren';
-        $desiredSlug = Str::slug($name);
+        $menus = [
+            [
+                'name' => 'Kopi Susu Gula Aren',
+                'category' => 'Minuman',
+                'description' => 'Perpaduan espresso dan gula aren asli.',
+            ],
+            [
+                'name' => 'Bali Kintamani V60',
+                'category' => 'Minuman',
+                'description' => 'Single origin kopi dari Bali dengan metode V60.',
+            ],
+            [
+                'name' => 'Croissant Coklat',
+                'category' => 'Camilan',
+                'description' => 'Croissant lembut dengan coklat premium.',
+            ],
+        ];
 
-        $menu = Menu::firstOrNew(['umkm_id' => $umkm->id, 'name' => $name]);
-        $menu->category = 'Minuman';
-        $menu->description = 'Perpaduan espresso dan gula aren asli.';
+        foreach ($menus as $menuData) {
+            $name = $menuData['name'];
+            $desiredSlug = Str::slug($name);
 
-        // Pastikan slug unik per UMKM (ada unique index [umkm_id, slug]).
-        $slug = $desiredSlug;
-        $count = 1;
-        while (
-            Menu::query()
+            $menu = Menu::firstOrNew(['umkm_id' => $umkm->id, 'name' => $name]);
+            $menu->category = $menuData['category'];
+            $menu->description = $menuData['description'];
+
+            // Pastikan slug unik per UMKM (ada unique index [umkm_id, slug]).
+            $slug = $desiredSlug;
+            $count = 1;
+            while (
+                Menu::query()
                 ->where('umkm_id', $umkm->id)
                 ->where('slug', $slug)
-                ->when($menu->exists, fn ($q) => $q->where('id', '!=', $menu->id))
+                ->when($menu->exists, fn($q) => $q->where('id', '!=', $menu->id))
                 ->exists()
-        ) {
-            $slug = $desiredSlug . '-' . $count++;
-        }
-        $menu->slug = $slug;
+            ) {
+                $slug = $desiredSlug . '-' . $count++;
+            }
+            $menu->slug = $slug;
 
-        $menu->save();
+            $menu->save();
+        }
     }
 }

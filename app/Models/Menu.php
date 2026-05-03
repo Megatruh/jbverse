@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 class Menu extends Model
 {
+    use HasFactory;
+
     // 1. Tambahkan 'slug' ke fillable
     protected $fillable = ['umkm_id', 'name', 'slug', 'category', 'description', 'images'];
 
@@ -47,7 +49,7 @@ class Menu extends Model
             $menu->slug = $slug;
         });
     }
-    
+
     // 3. Ubah kunci pencarian URL
     public function getRouteKeyName()
     {
