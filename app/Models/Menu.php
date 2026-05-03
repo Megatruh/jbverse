@@ -11,22 +11,16 @@ class Menu extends Model
     use HasFactory;
 
     // 1. Tambahkan 'slug' ke fillable
-    protected $fillable = ['umkm_id', 'name', 'slug', 'category', 'description', 'images'];
-
-    protected $casts = ['images' => 'array'];
+    // Ubah baris fillable menjadi seperti ini:
+    protected $fillable = [
+        'umkm_id', 'name', 'slug', 'category', 'description',
+        'image', 'ukuran', 'variant', 'price'
+    ];
 
     // Relasi (Tetap sama)
     public function umkm()
     {
         return $this->belongsTo(Umkm::class);
-    }
-    public function variantCategories()
-    {
-        return $this->hasMany(VariantCategory::class);
-    }
-    public function menuCombinations()
-    {
-        return $this->hasMany(MenuCombination::class);
     }
     public function reviews()
     {
@@ -37,12 +31,20 @@ class Menu extends Model
     protected static function booted()
     {
         static::creating(function ($menu) {
+            // Jika slug sudah diset manual, biarkan.
+            if (!empty($menu->slug)) {
+                return;
+            }
             $slug = Str::slug($menu->name);
             $originalSlug = $slug;
             $count = 1;
 
             // PERHATIAN: Pengecekan duplikat DIBATASI HANYA PADA umkm_id milik menu ini
-            while (static::where('umkm_id', $menu->umkm_id)->where('slug', $slug)->exists()) {
+            while (
+                static::where('umkm_id', '=', $menu->umkm_id, 'and')
+                    ->where('slug', '=', $slug, 'and')
+                    ->exists()
+            ) {
                 $slug = "{$originalSlug}-" . $count++;
             }
 

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use App\Models\Umkm;
+use App\Models\Menu; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+
 
 class PengusahaController extends Controller
 {
@@ -202,4 +204,91 @@ class PengusahaController extends Controller
                 'Permintaan aktivasi ulang telah dikirim ke Admin.'
             );
     }
+    /**
+     * Menampilkan form tambah menu
+     */
+    public function createMenu()
+    {
+        $user = Auth::user();
+        
+        // Pastikan akun tidak disuspend
+        if ($user->status === 'suspended') {
+            return redirect()->route('pengusaha.dashboard')->with('error', 'Akun ditangguhkan. Tidak bisa menambah menu.');
+        }
+
+        return view('pengusaha.menu.create');
+    }
+
+    /**
+     * Menyimpan data menu baru ke database
+     */
+/**
+     * Menyimpan data menu baru ke database
+     */
+    public function storeMenu(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
+            'description' => 'nullable|string|max:1000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'ukuran' => 'required|string|max:100',
+            'variant' => 'required|string|max:100',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        $umkm = Auth::user()->umkm;
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('menu_images', 'public');
+        }
+
+        // Simpan langsung ke tabel menus secara simpel
+        Menu::create([
+            'umkm_id' => $umkm->id,
+            'name' => $request->name,
+            'category' => $request->category,
+            // Kolom description di DB tidak nullable, jadi pastikan string.
+            'description' => $request->description ?? '',
+            'image' => $imagePath,
+            'ukuran' => $request->ukuran,
+            'variant' => $request->variant,
+            'price' => $request->price, 
+        ]);
+
+        return redirect()->route('pengusaha.dashboard')->with('status', 'Menu berhasil ditambahkan!');
+    }
+
+    /**
+     * Menampilkan daftar semua menu
+     */
+    public function indexMenu()
+    {
+        $umkm = Auth::user()->umkm;
+        
+        // Ambil semua menu milik UMKM ini, urutkan dari yang terbaru
+        $menus = Menu::query()->where('umkm_id', $umkm->id)->latest()->paginate(10);
+        
+        return view('pengusaha.menu.index', compact('menus'));
+    }
+    /**
+     * Menghapus menu
+     */
+    public function destroyMenu(Menu $menu)
+    {
+        // Keamanan: Pastikan menu yang dihapus benar-benar milik pengusaha yang login
+        if ($menu->umkm_id !== Auth::user()->umkm->id) {
+            abort(403, 'Anda tidak memiliki akses untuk menghapus menu ini.');
+        }
+
+        // Hapus foto fisik dari folder storage jika ada
+        if ($menu->image) {
+            Storage::disk('public')->delete($menu->image);
+        }
+
+        Menu::destroy($menu->id);
+
+        return redirect()->route('pengusaha.menu.index')->with('status', 'Menu berhasil dihapus!');
+    }        
 }

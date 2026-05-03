@@ -27,15 +27,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/ulasan/{review}', [UserController::class, 'hapusUlasan'])->name('ulasan.destroy');
 });
 
-// // Rute Halaman Utama (Katalog UMKM)
-// Route::get('/', [PengunjungController::class, 'beranda'])->name('beranda');
-
-// // Rute Detail Toko
-// Route::get('/toko/{umkm:slug}', [PengunjungController::class, 'detailToko'])->name('toko.detail');
-
-// // Rute Detail Menu (Scoped Binding)
-// Route::get('/toko/{umkm:slug}/{menu:slug}', [PengunjungController::class, 'detailMenu'])->name('menu.detail');
-
 // ... (Rute bawaan Breeze)
 
 Route::get('/register-mitra', [AuthController::class, 'showRegisterPengusahaForm'])
@@ -67,7 +58,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-//kerjaan Farhan : 
 Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.')->group(function(){
     // atur routes ke dashboard pengusaha
     Route::get('/dashboard', [
@@ -104,6 +94,24 @@ Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.'
         'requestReactivate'
     ])->name('request_reactivate');
 
+    // Rute CRUD Menu Pengusaha
+    Route::get('/menu/tambah', [
+        PengusahaController::class, 
+        'createMenu'
+        ])->name('menu.create');
+
+    Route::post('/menu/simpan', [
+        PengusahaController::class, 
+        'storeMenu'])->name('menu.store');    
+    
+    Route::get('/menu', [
+        PengusahaController::class, 
+        'indexMenu'])->name('menu.index');
+        
+    Route::delete('/menu/{menu}', [
+        PengusahaController::class, 
+        'destroyMenu'])->name('menu.destroy');  
+    
     Route::post('/ulasan/{review}/balas', [PengusahaController::class, 'balasUlasan'])->name('ulasan.balas');
     Route::delete('/ulasan/{review}/balas', [PengusahaController::class, 'hapusBalasan'])->name('ulasan.hapus-balasan');
 });
@@ -124,7 +132,6 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
         AdminController::class, 
         'suspend'
     ])->name('suspend');
-
     Route::get('/laporan', [AdminController::class, 'kelolaLaporan'])->name('laporan.index');
     Route::patch('/laporan/{report}', [AdminController::class, 'prosesLaporan'])->name('laporan.proses');
 });

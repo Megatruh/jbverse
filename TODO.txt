@@ -9,7 +9,7 @@ Lokasi uasaha -> akses lokasi saat mengset;
 
 
 Admin : 
-approval registrasi toko;
+approval registrasi toko (done)
 cek laproan user;
 laporan pengusaha;
 warning user;
