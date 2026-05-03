@@ -12,6 +12,7 @@ class UserController extends Controller
 {
     public function beranda()
     {
+        
         $umkms = Umkm::query()->where('is_open', true)->latest()->paginate(12);
         
         return view('public.beranda', compact('umkms'));

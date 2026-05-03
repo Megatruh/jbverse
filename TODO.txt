@@ -1,0 +1,15 @@
+---- JBVerse ----
+
+Pengusaha : 
+Registrasi Toko (done);
+tombol buka tutup (done);
+Pembuatan menu baru -> menunya apa  -> varian -> harga;
+balas komentar -> pengusaha tidak bisa hapus review user;
+Lokasi uasaha -> akses lokasi saat mengset;
+
+
+Admin : 
+approval registrasi toko;
+cek laproan user;
+laporan pengusaha;
+warning user;

@@ -77,7 +77,7 @@
             </h2>
 
             @auth
-                @if(auth()->user()->role === 'user')
+                @if(auth()->user()->role === 'user' || auth()->user()->role === 'pengusaha')
                     @php
                         // Cek apakah user yang login sudah pernah mereview menu ini
                         $sudahReview = $menu->reviews->contains('user_id', auth()->user()->id);

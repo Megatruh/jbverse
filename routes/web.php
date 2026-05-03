@@ -19,7 +19,8 @@ Route::get('/toko/{umkm:slug}', [UserController::class, 'detailToko'])->name('to
 Route::get('/toko/{umkm:slug}/{menu:slug}', [UserController::class, 'detailMenu'])->name('menu.detail');
 
 //rute user
-Route::middleware(['auth', 'user'])->group(function () {
+// Route::middleware(['auth', 'user'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::post('/toko/{umkm:slug}/{menu:slug}/ulasan', [UserController::class, 'kirimUlasan'])->name('ulasan.store');
     Route::post('/toko/{umkm:slug}/lapor', [UserController::class, 'laporUmkm'])->name('lapor.store');
     Route::put('/ulasan/{review}', [UserController::class, 'updateUlasan'])->name('ulasan.update');
