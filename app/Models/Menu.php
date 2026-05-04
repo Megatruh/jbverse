@@ -51,7 +51,7 @@ class Menu extends Model
             $menu->slug = $slug;
         });
     }
-    
+
     // 3. Ubah kunci pencarian URL
     public function getRouteKeyName()
     {

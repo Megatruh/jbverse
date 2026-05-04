@@ -19,7 +19,7 @@
                 </div>
                 
                 @auth
-                    @if(auth()->user()->role === 'user')
+                    @if(auth()->user()->role === 'user' || auth()->user()->role === 'pengusaha')
                         <div x-data="{ open: false }" class="mt-6 pt-4 border-t border-gray-100">
                             <button @click="open = !open" class="text-sm text-red-500 hover:text-red-700 font-medium">Ada masalah dengan toko ini? Lapor Admin</button>
                             

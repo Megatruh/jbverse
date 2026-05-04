@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Report;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -83,4 +85,26 @@ class AdminController extends Controller
 
     //     return back()->with('error', 'Gagal membekukan usaha.');
     // }
+
+    public function kelolaLaporan()
+    {
+        $laporans = Report::query()
+            ->with(['user', 'umkm'])
+            ->latest() // Urutkan dari yang terbaru
+            ->paginate(15);
+
+        return view('admin.laporan', compact('laporans'));
+    }
+
+    public function prosesLaporan(Request $request, Report $report)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,diproses,ditolak,selesai', 
+        ]);
+
+        $report->status = $request->status;
+        $report->save();
+
+        return redirect()->back()->with('success', 'Status laporan berhasil diperbarui.');
+    }
 }

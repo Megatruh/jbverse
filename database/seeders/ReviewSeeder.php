@@ -15,13 +15,17 @@ class ReviewSeeder extends Seeder
         $menuTarget = Menu::query()->where('name', 'Bali Kintamani V60')->first();
 
         if ($userBiasa && $menuTarget) {
-            Review::create([
-                'user_id' => $userBiasa->id,
-                'menu_id' => $menuTarget->id,
-                'rating' => 5,
-                'comment' => 'Kopinya sangat enak, acidity-nya pas banget!',
-                'reply' => 'Terima kasih atas ulasannya kak! Ditunggu kedatangannya kembali.',
-            ]);
+            Review::updateOrCreate(
+                [
+                    'user_id' => $userBiasa->id,
+                    'menu_id' => $menuTarget->id,
+                ],
+                [
+                    'rating' => 5,
+                    'comment' => 'Kopinya sangat enak, acidity-nya pas banget!',
+                    'reply' => 'Terima kasih atas ulasannya kak! Ditunggu kedatangannya kembali.',
+                ]
+            );
         }
     }
 }
