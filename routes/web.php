@@ -69,7 +69,7 @@ Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.'
     Route::patch('/lengkapi-profil', [
         PengusahaController::class, 
         'simpanProfil'
-    ])->name('simpan_profil');`
+    ])->name('simpan_profil');
 
     // Toggle status buka/tutup toko
     Route::patch('/toko/toggle-status', [
