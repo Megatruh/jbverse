@@ -40,5 +40,11 @@ class UserSeeder extends Seeder
             'role' => 'user',
             'status' => 'approved',
         ]);
+
+        // Buat 20 pengusaha random
+        User::factory(20)->pengusaha()->create();
+
+        // Buat 50 user regular random
+        User::factory(50)->create();
     }
 }

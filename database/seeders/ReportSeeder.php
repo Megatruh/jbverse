@@ -12,6 +12,7 @@ class ReportSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        // Buat 30 laporan random
+        \App\Models\Report::factory(30)->create();
     }
 }

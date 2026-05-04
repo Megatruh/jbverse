@@ -68,5 +68,11 @@ class MenuSeeder extends Seeder
 
             $menu->save();
         }
+
+        // Buat 3-5 menu per setiap UMKM yang ada
+        $umkms = Umkm::all();
+        foreach ($umkms as $umkm) {
+            Menu::factory(rand(3, 5))->for($umkm)->create();
+        }
     }
 }
