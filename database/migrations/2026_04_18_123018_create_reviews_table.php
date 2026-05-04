@@ -11,6 +11,7 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
+            $table->text('reply')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             // PERUBAHAN DI SINI:
             $table->foreignId('menu_id')->constrained()->cascadeOnDelete();

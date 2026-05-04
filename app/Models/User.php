@@ -68,7 +68,7 @@ class User extends Authenticatable
         return $this->hasOne(Umkm::class);
     }
 
-    //Fungsi otomatis pembuat Slug saat registrasi
+    // //Fungsi otomatis pembuat Slug saat registrasi
     protected static function booted()
     {
         static::creating(function ($user) {

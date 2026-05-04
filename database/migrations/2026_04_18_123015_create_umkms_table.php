@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('contact_number');
             $table->text('description');
             $table->boolean('is_open')->default(false);
+            $table->string('logo')->nullable();
             $table->string('image_banner')->nullable();
             $table->timestamps();
         });
