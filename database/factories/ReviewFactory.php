@@ -2,23 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\Menu;
-use App\Models\Review;
 use App\Models\User;
+use App\Models\Menu;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends Factory<Review>
- */
 class ReviewFactory extends Factory
 {
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), // Pengunjung yang me-review
-            'menu_id' => Menu::factory(), // Menu yang di-review
-            'rating' => fake()->numberBetween(1, 5),
-            'comment' => fake()->paragraph(),
+            'user_id' => User::factory(),
+            'menu_id' => Menu::factory(),
+            'rating' => fake()->numberBetween(3, 5), // Rating antara 3-5 agar toko terlihat bagus
+            'comment' => fake()->sentence(),
+            'reply' => fake()->boolean(30) ? fake()->sentence() : null, // 30% kemungkinan dibalas toko
         ];
     }
 }

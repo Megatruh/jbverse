@@ -5,21 +5,24 @@ namespace Database\Factories;
 use App\Models\Menu;
 use App\Models\Umkm;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-/**
- * @extends Factory<Menu>
- */
+class MenuFactory extends Factory{
+    protected $model = Menu::class;
 
-class MenuFactory extends Factory
-{
     public function definition(): array
     {
+        $name = fake()->words(3, true);
         return [
             'umkm_id' => Umkm::factory(),
-            'name' => fake()->words(3, true),
-            'category' => fake()->randomElement(['Makanan', 'Minuman', 'Camilan', 'Merchandise']),
+            'name' => $name,
+            'slug' => Str::slug($name . '-' . fake()->unique()->numerify('####')),
+            'category' => fake()->randomElement(['Makanan Utama', 'Minuman', 'Camilan', 'Dessert']),
             'description' => fake()->sentence(),
-            'images' => [fake()->imageUrl(640, 480, 'food', true)], // Format array untuk JSON
+            'image' => null,
+            'ukuran' => fake()->randomElement(['Kecil', 'Sedang', 'Besar', 'Reguler', 'Large']),
+            'variant' => fake()->randomElement(['Original', 'Pedas', 'Manis', 'Asin', 'Dingin', 'Panas']),
+            'price' => fake()->numberBetween(5000, 75000),
         ];
     }
 }
