@@ -4,3 +4,9 @@
 @source "../../storage/framework/views/*.php";
 @source "../**/*.blade.php";
 @source "../**/*.js";
+
+@theme {
+    --color-prim1: #1e3a5f;
+    --color-prim2: #325a8e;
+    --color-prim3: #1D3452;
+}
