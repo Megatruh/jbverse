@@ -12,9 +12,9 @@ class UserController extends Controller
 {
     public function beranda()
     {
-        
+
         $umkms = Umkm::query()->where('is_open', true)->latest()->paginate(12);
-        
+
         return view('public.beranda', compact('umkms'));
     }
 
@@ -38,9 +38,9 @@ class UserController extends Controller
 
         // Cek apakah user sudah pernah memberi ulasan (1 menu 1 ulasan)
         $sudahAdaUlasan = Review::query()
-                                ->where('user_id', $request->user()->id)
-                                ->where('menu_id', $menu->id)
-                                ->exists();
+            ->where('user_id', $request->user()->id)
+            ->where('menu_id', $menu->id)
+            ->exists();
 
         if ($sudahAdaUlasan) {
             return redirect()->back()->with('error', 'Anda sudah memberikan ulasan untuk menu ini sebelumnya.');
@@ -87,7 +87,7 @@ class UserController extends Controller
             'comment' => 'required|string|max:1000',
         ]);
 
-        
+
         $review->rating = $request->rating;
         $review->comment = $request->comment;
         $review->save();
@@ -101,5 +101,41 @@ class UserController extends Controller
         abort_if($review->user_id !== $request->user()->id, 403, 'Akses ditolak.');
         Review::query()->where('id', $review->id)->delete();
         return redirect()->back()->with('success', 'Ulasan Anda berhasil dihapus.');
+    }
+
+    // Fungsi Pencarian Menu dan UMKM
+    public function search(Request $request)
+    {
+        $query = $request->input('q', '');
+        $menus = [];
+        $umkms = [];
+
+        if (strlen($query) >= 2) {
+            // Cari Menu
+            $menus = Menu::query()
+                ->with('umkm')
+                ->where('name', 'like', '%' . $query . '%')
+                ->whereHas('umkm', function ($q) {
+                    $q->where('is_open', true);
+                })
+                ->limit(10)
+                ->get();
+
+            // Cari UMKM
+            $umkms = Umkm::query()
+                ->where('name', 'like', '%' . $query . '%')
+                ->where('is_open', true)
+                ->limit(10)
+                ->get();
+        }
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'menus' => $menus,
+                'umkms' => $umkms,
+            ]);
+        }
+
+        return view('public.search', compact('menus', 'umkms', 'query'));
     }
 }

@@ -18,6 +18,9 @@ Route::get('/toko/{umkm:slug}', [UserController::class, 'detailToko'])->name('to
 // Rute Detail Menu (Scoped Binding)
 Route::get('/toko/{umkm:slug}/{menu:slug}', [UserController::class, 'detailMenu'])->name('menu.detail');
 
+// Rute Pencarian Menu dan UMKM
+Route::get('/cari', [UserController::class, 'search'])->name('cari.search');
+
 //rute user
 // Route::middleware(['auth', 'user'])->group(function () {
 Route::middleware('auth')->group(function () {
