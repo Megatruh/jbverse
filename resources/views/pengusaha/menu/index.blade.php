@@ -61,7 +61,7 @@
                                     </td>
                                     <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm font-medium">
                                         <div class="flex items-center justify-end gap-3">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition">
+                                            <a href="{{ route('pengusaha.menu.edit', $item) }}" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition">
                                                 Edit
                                             </a>
                                             

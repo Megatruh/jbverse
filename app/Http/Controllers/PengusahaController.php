@@ -290,5 +290,54 @@ class PengusahaController extends Controller
         Menu::destroy($menu->id);
 
         return redirect()->route('pengusaha.menu.index')->with('status', 'Menu berhasil dihapus!');
-    }        
+    }
+
+    public function editMenu(Menu $menu)
+    {
+        // Keamanan: Pastikan menu yang diedit benar-benar milik pengusaha yang login
+        if ($menu->umkm_id !== Auth::user()->umkm->id) {
+            abort(403, 'Anda tidak memiliki akses untuk mengedit menu ini.');
+        }
+
+        return view('pengusaha.menu.edit', compact('menu'));
+    }
+    
+    public function updateMenu(Request $request, Menu $menu)
+    {
+        // // Keamanan: Pastikan menu yang diupdate benar-benar milik pengusaha yang login
+        // if ($menu->umkm_id !== Auth::user()->umkm->id) {
+        //     abort(403, 'Anda tidak memiliki akses untuk mengupdate menu ini.');
+        // }
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'ukuran'=>'required|string|max:100',
+            'variant'=>'required|string|max:100',
+            'price'=>'required|numeric|min:0',
+        ]);        
+
+        $dataToUpdate = [
+            'name' => $request->name,
+            'category' => $request->category,
+            'description' => $request->description ?? '',
+            'ukuran' => $request->ukuran,
+            'variant' => $request->variant,
+            'price' => $request->price,
+        ];
+
+        if ($request->hasFile('image')) {
+            // Hapus foto lama jika ada
+            if ($menu->image) {
+                Storage::disk('public')->delete($menu->image);
+            }
+            $dataToUpdate['image'] = $request->file('image')->store('menu_images', 'public');
+        }
+
+        $menu->update($dataToUpdate);
+
+        return redirect()->route('pengusaha.menu.index')->with('status', 'Menu berhasil diperbarui!');
+    }
 }
