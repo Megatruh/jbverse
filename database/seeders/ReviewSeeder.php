@@ -27,5 +27,8 @@ class ReviewSeeder extends Seeder
                 ]
             );
         }
+
+        // Buat 100 review random dengan user dan menu random
+        Review::factory(100)->create();
     }
 }

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             UmkmSeeder::class,
             MenuSeeder::class,
             ReviewSeeder::class,
+            ReportSeeder::class,
         ]);
     }
 }

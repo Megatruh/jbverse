@@ -46,9 +46,9 @@ class UmkmSeeder extends Seeder
         $count = 1;
         while (
             Umkm::query()
-                ->where('slug', $slug)
-                ->when($umkm->exists, fn ($q) => $q->where('id', '!=', $umkm->id))
-                ->exists()
+            ->where('slug', $slug)
+            ->when($umkm->exists, fn($q) => $q->where('id', '!=', $umkm->id))
+            ->exists()
         ) {
             $slug = $desiredSlug . '-' . $count++;
         }
@@ -56,7 +56,10 @@ class UmkmSeeder extends Seeder
 
         $umkm->save();
 
-        Umkm::factory(8)->create();
-
+        // Buat 30 UMKM random dengan pengusaha dari user yang ada
+        $pengusahaUsers = User::query()->where('role', 'pengusaha')->get();
+        Umkm::factory(30)
+            ->recycle($pengusahaUsers)
+            ->create();
     }
 }
