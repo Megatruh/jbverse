@@ -19,25 +19,30 @@ class AdminController extends Controller
         $approvedUmkms = User::query()->with('umkm')
         ->where('role','pengusaha')
         ->where('status','approved')
-        ->get();
+        ->latest()
+        ->paginate(10);
+
+        $suspendedUmkms = User::query()
+        ->with('umkm')
+        ->where('role','pengusaha')
+        ->where('status','suspended')
+        ->latest()
+        ->paginate(5);
+
+        //ambil data laporan user
+        $laporans = Report::query()
+            ->with(['user', 'umkm'])
+            ->latest() // Urutkan dari yang terbaru
+            ->paginate(5);
 
         return view('admin.dashboard', compact(
             'pendingUmkms', 
             'approvedUmkms',
+            'laporans',
+            'suspendedUmkms'
         ));
     }
 
-    // public function approve($id)
-    // {
-    //     $user = User::findOrFail($id);
-    
-    //     if ($user->role === 'pengusaha' && $user->status === 'pending') {
-    //         $user->update(['status' => 'approved']);
-    //         return back()->with('success', 'UMKM berhasil disetujui!');
-    //     }
-    
-    //     return back()->with('error', 'Data tidak valid.');
-    // }
     /**
      * Meng-ACC pendaftaran pengusaha
      */

@@ -97,36 +97,39 @@ Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.'
         'requestReactivate'
     ])->name('request_reactivate');
 
-    // Rute CRUD Menu Pengusaha
-    Route::get('/menu/tambah', [
-        PengusahaController::class,
-        'createMenu'
-    ])->name('menu.create');
-
-    Route::post('/menu/simpan', [
-        PengusahaController::class,
-        'storeMenu'
-    ])->name('menu.store');
-
-    Route::get('/menu/{menu}/edit', [
-        PengusahaController::class,
-        'editMenu'
-    ])->name('menu.edit');
-
-    Route::put('/menu/{menu}', [
-        PengusahaController::class,
-        'updateMenu'
-    ])->name('menu.update');
-
-    Route::get('/menu', [
-        PengusahaController::class,
-        'indexMenu'
-    ])->name('menu.index');
-
-    Route::delete('/menu/{menu}', [
-        PengusahaController::class,
-        'destroyMenu'
-    ])->name('menu.destroy');
+    // Route Permenuan
+    Route::prefix('menu')->name('menu.')->group(function(){
+        // Rute CRUD Menu Pengusaha
+        Route::get('/tambah', [
+            PengusahaController::class,
+            'createMenu'
+        ])->name('create');
+    
+        Route::post('/simpan', [
+            PengusahaController::class,
+            'storeMenu'
+        ])->name('store');
+    
+        Route::get('/{menu}/edit', [
+            PengusahaController::class,
+            'editMenu'
+        ])->name('edit');
+    
+        Route::put('/{menu}', [
+            PengusahaController::class,
+            'updateMenu'
+        ])->name('update');
+    
+        Route::get('', [
+            PengusahaController::class,
+            'indexMenu'
+        ])->name('index');
+    
+        Route::delete('/{menu}', [
+            PengusahaController::class,
+            'destroyMenu'
+        ])->name('destroy');
+    });
 
     Route::post('/ulasan/{review}/balas', [PengusahaController::class, 'balasUlasan'])->name('ulasan.balas');
     Route::delete('/ulasan/{review}/balas', [PengusahaController::class, 'hapusBalasan'])->name('ulasan.hapus-balasan');
@@ -134,8 +137,7 @@ Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.'
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [
-        AdminController::class,
-        'dashboard',
+        AdminController::class,'dashboard',
     ])->name('dashboard');
     // Aksi ACC dan Suspend
     //aksi aprrove umkm
