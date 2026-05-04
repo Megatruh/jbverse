@@ -108,6 +108,16 @@ Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.'
         'storeMenu'
     ])->name('menu.store');
 
+    Route::get('/menu/{menu}/edit', [
+        PengusahaController::class,
+        'editMenu'
+    ])->name('menu.edit');
+
+    Route::put('/menu/{menu}', [
+        PengusahaController::class,
+        'updateMenu'
+    ])->name('menu.update');
+
     Route::get('/menu', [
         PengusahaController::class,
         'indexMenu'

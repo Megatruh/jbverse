@@ -67,24 +67,6 @@ class AdminController extends Controller
         }
         return back()->with('error', 'Gagal membekukan umkm');
     }
-    // public function suspend($id)
-    // {
-    //     $user = User::findOrFail($id);
-
-    //     if ($user->role === 'pengusaha') {
-    //         // Mengubah status menjadi suspended agar tidak bisa login/jualan
-    //         $user->update(['status' => 'suspended']);
-            
-    //         // Opsional: Otomatis tutup tokonya di tabel umkms
-    //         if ($user->umkm) {
-    //             $user->umkm->update(['is_open' => false]);
-    //         }
-
-    //         return back()->with('success', 'Usaha berhasil dibekukan.');
-    //     }
-
-    //     return back()->with('error', 'Gagal membekukan usaha.');
-    // }
 
     public function kelolaLaporan()
     {
