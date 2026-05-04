@@ -34,7 +34,7 @@
                         <h2 class="text-2xl font-bold text-gray-900 mb-6">🏪 UMKM ({{ count($umkms) }})</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                             @foreach ($umkms as $toko)
-                                <a href="{{ route('toko.detail', $toko->slug) }}"
+                                <a href="{{ route('umkm.detail', $toko->slug) }}"
                                     class="block bg-white rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-gray-100 overflow-hidden group">
                                     <div class="h-48 bg-gray-200">
                                         @if ($toko->image_banner)

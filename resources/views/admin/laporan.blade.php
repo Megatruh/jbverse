@@ -60,7 +60,7 @@
                                     <!-- Info Toko -->
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if ($laporan->umkm)
-                                            <a href="{{ route('toko.detail', $laporan->umkm->slug) }}" target="_blank"
+                                            <a href="{{ route('umkm.detail', $laporan->umkm->slug) }}" target="_blank"
                                                 class="text-sm font-bold text-indigo-600 hover:underline">
                                                 {{ $laporan->umkm->name }}
                                             </a>

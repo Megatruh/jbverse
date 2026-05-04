@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Route;
 // Rute Halaman Utama (Katalog UMKM)
 Route::get('/', [UserController::class, 'beranda'])->name('public.beranda');
 
-// Rute Detail Toko
-Route::get('/toko/{umkm:slug}', [UserController::class, 'detailToko'])->name('toko.detail');
+// Rute Detail UMKM
+Route::get('/umkm/{umkm:slug}', [UserController::class, 'detailToko'])->name('umkm.detail');
 
 // Rute Detail Menu (Scoped Binding)
-Route::get('/toko/{umkm:slug}/{menu:slug}', [UserController::class, 'detailMenu'])->name('menu.detail');
+Route::get('/umkm/{umkm:slug}/{menu:slug}', [UserController::class, 'detailMenu'])->name('menu.detail');
 
 // Rute Pencarian Menu dan UMKM
 Route::get('/cari', [UserController::class, 'search'])->name('cari.search');
@@ -24,8 +24,8 @@ Route::get('/cari', [UserController::class, 'search'])->name('cari.search');
 //rute user
 // Route::middleware(['auth', 'user'])->group(function () {
 Route::middleware('auth')->group(function () {
-    Route::post('/toko/{umkm:slug}/{menu:slug}/ulasan', [UserController::class, 'kirimUlasan'])->name('ulasan.store');
-    Route::post('/toko/{umkm:slug}/lapor', [UserController::class, 'laporUmkm'])->name('lapor.store');
+    Route::post('/umkm/{umkm:slug}/{menu:slug}/ulasan', [UserController::class, 'kirimUlasan'])->name('ulasan.store');
+    Route::post('/umkm/{umkm:slug}/lapor', [UserController::class, 'laporUmkm'])->name('lapor.store');
     Route::put('/ulasan/{review}', [UserController::class, 'updateUlasan'])->name('ulasan.update');
     Route::delete('/ulasan/{review}', [UserController::class, 'hapusUlasan'])->name('ulasan.destroy');
 });
@@ -61,65 +61,68 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.')->group(function(){
+Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.')->group(function () {
     // atur routes ke dashboard pengusaha
     Route::get('/dashboard', [
-        PengusahaController::class, 
+        PengusahaController::class,
         'dashboard'
     ])->name('dashboard');
 
     // Rute untuk submit pelengkapan profil
     Route::patch('/lengkapi-profil', [
-        PengusahaController::class, 
+        PengusahaController::class,
         'simpanProfil'
     ])->name('simpan_profil');
 
-    // Toggle status buka/tutup toko
-    Route::patch('/toko/toggle-status', [
+    // Toggle status buka/tutup umkm
+    Route::patch('/umkm/toggle-status', [
         PengusahaController::class,
         'toggleStatus'
     ])->name('toggle_status');
 
     // Tambahkan ini
     Route::get('/edit', [
-        PengusahaController::class, 
+        PengusahaController::class,
         'edit'
     ])->name('edit');
 
     Route::patch('/update', [
-        PengusahaController::class, 
+        PengusahaController::class,
         'update'
     ])->name('update');
 
     // pengusaha yang mau aktivasi kembali akun yang tersuspend
     Route::post('/request-reactivate', [
-        PengusahaController::class, 
+        PengusahaController::class,
         'requestReactivate'
     ])->name('request_reactivate');
 
     // Rute CRUD Menu Pengusaha
     Route::get('/menu/tambah', [
-        PengusahaController::class, 
+        PengusahaController::class,
         'createMenu'
-        ])->name('menu.create');
+    ])->name('menu.create');
 
     Route::post('/menu/simpan', [
-        PengusahaController::class, 
-        'storeMenu'])->name('menu.store');    
-    
+        PengusahaController::class,
+        'storeMenu'
+    ])->name('menu.store');
+
     Route::get('/menu', [
-        PengusahaController::class, 
-        'indexMenu'])->name('menu.index');
-        
+        PengusahaController::class,
+        'indexMenu'
+    ])->name('menu.index');
+
     Route::delete('/menu/{menu}', [
-        PengusahaController::class, 
-        'destroyMenu'])->name('menu.destroy');  
-    
+        PengusahaController::class,
+        'destroyMenu'
+    ])->name('menu.destroy');
+
     Route::post('/ulasan/{review}/balas', [PengusahaController::class, 'balasUlasan'])->name('ulasan.balas');
     Route::delete('/ulasan/{review}/balas', [PengusahaController::class, 'hapusBalasan'])->name('ulasan.hapus-balasan');
 });
 
-Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(function(){
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [
         AdminController::class,
         'dashboard',
@@ -127,15 +130,15 @@ Route::middleware(['auth','admin'])->prefix('admin')->name('admin.')->group(func
     // Aksi ACC dan Suspend
     //aksi aprrove umkm
     Route::patch('approve/{id}', [
-        AdminController::class, 
+        AdminController::class,
         'approve'
     ])->name('approve');
     //aksi suspend umkm
     Route::patch('suspend/{id}', [
-        AdminController::class, 
+        AdminController::class,
         'suspend'
     ])->name('suspend');
     Route::get('/laporan', [AdminController::class, 'kelolaLaporan'])->name('laporan.index');
     Route::patch('/laporan/{report}', [AdminController::class, 'prosesLaporan'])->name('laporan.proses');
 });
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
