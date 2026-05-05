@@ -1,7 +1,6 @@
 <x-guest-layout>
 
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
@@ -20,10 +19,10 @@
                     <x-heroicon-o-envelope class="w-5 h-5 text-gray-600" />
                 </div>
                 <x-text-input id="email" class="pl-10 py-2 block mt-1 w-full" type="email" name="email"
-                    :value="old('email')" required autofocus placeholder="Konfirmasi email" />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                :value="old('email')" required autofocus placeholder="Konfirmasi email" />
             </div>
-        </div>
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-auth-session-status class="mt-2" :status="session('status')" />
 
         <div class="mt-8 mb-2">
             <x-primary-button class="my-4 w-full flex justify-center py-2">

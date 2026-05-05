@@ -104,27 +104,27 @@ Route::middleware(['auth', 'pengusaha'])->prefix('pengusaha')->name('pengusaha.'
             PengusahaController::class,
             'createMenu'
         ])->name('create');
-    
+
         Route::post('/simpan', [
             PengusahaController::class,
             'storeMenu'
         ])->name('store');
-    
+
         Route::get('/{menu}/edit', [
             PengusahaController::class,
             'editMenu'
         ])->name('edit');
-    
+
         Route::put('/{menu}', [
             PengusahaController::class,
             'updateMenu'
         ])->name('update');
-    
+
         Route::get('', [
             PengusahaController::class,
             'indexMenu'
         ])->name('index');
-    
+
         Route::delete('/{menu}', [
             PengusahaController::class,
             'destroyMenu'
