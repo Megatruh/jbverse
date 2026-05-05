@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Umkm;
 use App\Models\Menu;
-use App\Models\Review;
 use App\Models\Report;
+use App\Models\Review;
+use App\Models\Umkm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function beranda()
     {
+        $user = Auth::user();
+
+        if ($user?->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if ($user?->role === 'pengusaha') {
+            return redirect()->route('pengusaha.dashboard');
+        }
         // Ambil menus dari UMKM yang sedang buka
         $menus = Menu::query()
             ->whereHas('umkm', function ($query) {
@@ -21,7 +31,7 @@ class UserController extends Controller
             ->latest()
             ->paginate(12);
 
-        return view('public.beranda', compact('menus'));
+        return view('public.beranda', compact('menus', 'user'));
     }
 
     public function detailToko(Umkm $umkm)
