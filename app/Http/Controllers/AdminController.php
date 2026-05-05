@@ -19,25 +19,30 @@ class AdminController extends Controller
         $approvedUmkms = User::query()->with('umkm')
         ->where('role','pengusaha')
         ->where('status','approved')
-        ->get();
+        ->latest()
+        ->paginate(10);
+
+        $suspendedUmkms = User::query()
+        ->with('umkm')
+        ->where('role','pengusaha')
+        ->where('status','suspended')
+        ->latest()
+        ->paginate(5);
+
+        //ambil data laporan user
+        $laporans = Report::query()
+            ->with(['user', 'umkm'])
+            ->latest() // Urutkan dari yang terbaru
+            ->paginate(5);
 
         return view('admin.dashboard', compact(
             'pendingUmkms', 
             'approvedUmkms',
+            'laporans',
+            'suspendedUmkms'
         ));
     }
 
-    // public function approve($id)
-    // {
-    //     $user = User::findOrFail($id);
-    
-    //     if ($user->role === 'pengusaha' && $user->status === 'pending') {
-    //         $user->update(['status' => 'approved']);
-    //         return back()->with('success', 'UMKM berhasil disetujui!');
-    //     }
-    
-    //     return back()->with('error', 'Data tidak valid.');
-    // }
     /**
      * Meng-ACC pendaftaran pengusaha
      */
@@ -67,24 +72,6 @@ class AdminController extends Controller
         }
         return back()->with('error', 'Gagal membekukan umkm');
     }
-    // public function suspend($id)
-    // {
-    //     $user = User::findOrFail($id);
-
-    //     if ($user->role === 'pengusaha') {
-    //         // Mengubah status menjadi suspended agar tidak bisa login/jualan
-    //         $user->update(['status' => 'suspended']);
-            
-    //         // Opsional: Otomatis tutup tokonya di tabel umkms
-    //         if ($user->umkm) {
-    //             $user->umkm->update(['is_open' => false]);
-    //         }
-
-    //         return back()->with('success', 'Usaha berhasil dibekukan.');
-    //     }
-
-    //     return back()->with('error', 'Gagal membekukan usaha.');
-    // }
 
     public function kelolaLaporan()
     {
