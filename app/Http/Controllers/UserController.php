@@ -77,7 +77,7 @@ class UserController extends Controller
             'user_id'  => $request->user()->id,
             'umkm_id'  => $umkm->id,
             'reason'   => $request->reason,
-            'status'   => 'pending',
+            'status'   => 'diproses',
         ]);
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim ke Admin untuk ditindaklanjuti.');

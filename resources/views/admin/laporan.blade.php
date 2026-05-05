@@ -85,9 +85,6 @@
                                             <select name="status"
                                                 class="text-sm border-gray-300 rounded-lg py-1 pl-3 pr-8 shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                                                 onchange="this.form.submit()">
-                                                <option value="pending"
-                                                    {{ $laporan->status == 'pending' ? 'selected' : '' }}>Pending
-                                                </option>
                                                 <option value="diproses"
                                                     {{ $laporan->status == 'diproses' ? 'selected' : '' }}>Diproses
                                                 </option>

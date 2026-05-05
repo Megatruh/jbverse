@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('umkm_id')->constrained('umkms')->cascadeOnDelete();
             $table->text('reason');
-            $table->enum('status', ['pending', 'diproses', 'selesai', 'ditolak'])->default('pending');
+            $table->enum('status', ['diproses', 'selesai', 'ditolak'])->default('diproses');
             $table->timestamps();
         });
     }
