@@ -43,10 +43,10 @@
                         </div>
 
                         {{-- Jam Operasional --}}
-                        <div class="my-1 flex items-center gap-1 text-gray-600">
+                        {{-- <div class="my-1 flex items-center gap-1 text-gray-600">
                             <x-heroicon-o-clock class="w-4 h-4 text-gray-600" />
                             <span>{{ $umkm->operational_hours ?? '16.00 - 23.00 WIB' }}</span>
-                        </div>
+                        </div> --}}
 
                         {{-- Link Google Maps (opsional) --}}
                         @if ($umkm->google_maps_link ?? false)

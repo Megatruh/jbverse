@@ -54,7 +54,8 @@
 
                 <div class="flex items-center gap-4 mb-3">
                     <div class="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden">
-                        <img src="{{ $logoUrl }}" alt="{{ $umkm->name }}" class="w-full h-full object-cover">
+                        <img src="{{ asset('storage/' . $umkm->image_banner) }}" alt="{{ $umkm->name }}" class="w-full h-full object-cover">
+						
                     </div>
                     <div>
                         <h3 class="text-base font-semibold text-gray-900">{{ $umkm->name }}</h3>
@@ -65,7 +66,7 @@
                 <div class="grid gap-3">
                     <div class="bg-gray-50 rounded p-3">
                         <p class="text-2xl font-bold text-gray-900">{{ (int) ($menusCount ?? 0) }}</p>
-                        <p class="text-xs text-gray-600 mt-1">Total Menu Aktif</p>
+                        <p class="text-xs text-gray-600 mt-1">Total Menu</p>
                     </div>
                     {{-- <div class="bg-yellow-50 rounded p-3">
                         <p class="text-2xl font-bold text-yellow-600">{{ (int) ($verification_count ?? 0) }}</p>
@@ -76,15 +77,15 @@
 
             <!-- Profil Usaha -->
             <div class="bg-white rounded-lg p-4 border border-gray-200">
-                <h2 class="text-base font-bold text-gray-900 mb-4">Profil Usaha</h2>
+                {{-- <h2 class="text-base font-bold text-gray-900 mb-4">Profil Usaha</h2> --}}
 
                 <div class="space-y-3">
-                    <div>
+                    {{-- <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Nama Usaha</label>
                         <div class="bg-gray-50 rounded px-3 py-2">
                             <p class="text-sm text-gray-900">{{ $umkm->name }}</p>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Usaha</label>
@@ -93,12 +94,12 @@
                         </div>
                     </div>
 
-                    <div>
+                    {{-- <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Jam Operasional</label>
                         <div class="bg-gray-50 rounded px-3 py-2">
                             <p class="text-sm text-gray-900">{{ $umkm->operating_hours ?? 'Belum diatur' }}</p>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
