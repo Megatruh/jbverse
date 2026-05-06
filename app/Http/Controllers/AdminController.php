@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\Umkm;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,11 +11,20 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
+        $activeUmkmCount = Umkm::query()
+            ->where('is_open', true)
+            ->whereHas('user', function ($query) {
+                $query->where('status', 'approved');
+            })
+            ->count('*');
+
         //ambil data dari pengusaha yang masih menunggu aprooval;
         $pendingUmkms = User::query()->with('umkm')
             ->where('role', 'pengusaha')
             ->where('status', 'pending')
             ->get();
+
+        $pendingCount = $pendingUmkms->count();
 
         //ambil data pengusaha yang sudah aproov
         $approvedUmkms = User::query()->with('umkm')
@@ -22,6 +32,11 @@ class AdminController extends Controller
             ->where('status', 'approved')
             ->latest()
             ->paginate(10);
+
+        $approvedCount = User::query()
+            ->where('role', 'pengusaha')
+            ->where('status', 'approved')
+            ->count('*');
 
         $suspendedUmkms = User::query()
             ->with('umkm')
@@ -36,7 +51,13 @@ class AdminController extends Controller
             ->latest() // Urutkan dari yang terbaru
             ->paginate(5);
 
+        $reportCount = Report::query()->count('*');
+
         return view('admin.dashboard', compact(
+            'activeUmkmCount',
+            'pendingCount',
+            'approvedCount',
+            'reportCount',
             'pendingUmkms',
             'approvedUmkms',
             'laporans',

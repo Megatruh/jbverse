@@ -9,20 +9,17 @@
         </div>
 
         <!-- Statistics Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <x-admin.stat-card title="Pendaftaran Daftar Usaha" value="4" :change="null"
-                icon='<svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>'
-                iconBg="bg-blue-100" />
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            <x-admin.stat-card title="Menunggu Verifikasi" value="4" change="Perubahan data usaha" changeType="positive"
+            <x-admin.stat-card title="Menunggu Verifikasi" value="{{ $pendingCount }}" change="Perubahan data usaha" changeType="positive"
                 icon='<svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
                 iconBg="bg-amber-100" />
 
-            <x-admin.stat-card title="Total UMKM Terdaftar" value="1" change="Aktif di platform" changeType="positive"
+            <x-admin.stat-card title="Total UMKM Terdaftar" value="{{ $approvedCount }}" change="Aktif di platform" changeType="positive"
                 icon='<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5.581m0 0H9m5.581 0a2.121 2.121 0 01-4.281-1.09A2.05 2.05 0 0113.5 13c0-1.138-.78-2.104-1.822-2.12a2.121 2.121 0 00-4.281 1.09A2.05 2.05 0 0010.5 13" /></svg>'
                 iconBg="bg-green-100" />
 
-            <x-admin.stat-card title="Laporan Masuk" value="0" change="Perlu ditindaklanjuti" changeType="negative"
+            <x-admin.stat-card title="Laporan Masuk" value="{{ $reportCount }}" change="Perlu ditindaklanjuti" changeType="negative"
                 icon='<svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
                 iconBg="bg-red-100" />
         </div>
