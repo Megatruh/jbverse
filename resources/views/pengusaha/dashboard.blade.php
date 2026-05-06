@@ -63,15 +63,15 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3">
+                <div class="grid gap-3">
                     <div class="bg-gray-50 rounded p-3">
                         <p class="text-2xl font-bold text-gray-900">{{ (int) ($menusCount ?? 0) }}</p>
                         <p class="text-xs text-gray-600 mt-1">Total Menu</p>
                     </div>
-                    <div class="bg-yellow-50 rounded p-3">
+                    {{-- <div class="bg-yellow-50 rounded p-3">
                         <p class="text-2xl font-bold text-yellow-600">{{ (int) ($verification_count ?? 0) }}</p>
                         <p class="text-xs text-yellow-700 mt-1">Menunggu Verifikasi</p>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
