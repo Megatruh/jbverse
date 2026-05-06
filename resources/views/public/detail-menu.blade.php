@@ -38,7 +38,10 @@
                     Rp {{ number_format($menu->price, 0, ',', '.') }}
                 </p>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> frontend
                 <div
                     class="w-auto h-6 absolute left-2 ml-3 bottom-4 flex items-center gap-1 px-2 bg-yellow-100/40 rounded-lg overflow-hidden">
                     <x-heroicon-s-star class="w-4 h-4 text-yellow-500" />

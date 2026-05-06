@@ -35,7 +35,7 @@
                     <p class="mt-3 text-gray-600 leading-relaxed">{{ $umkm->description }}</p>
 
                     {{-- Info tambahan: Lokasi, Jam Operasional, Google Maps --}}
-                    <div class="mt-5 block gap-x-6 gap-y-3 text-sm  ">
+                    <div class="mt-5 block gap-x-6 gap-y-3 text-sm">
                         {{-- Lokasi / Alamat --}}
                         <div class="my-1 flex items-center gap-1 text-gray-600">
                             <a href="https://www.google.com/maps?q={{ $umkm->latitude }},{{ $umkm->longitude }}" target="_blank" class="gap-1 flex items-center text-gray-600 hover:text-indigo-800">
