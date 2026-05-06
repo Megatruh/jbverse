@@ -22,8 +22,7 @@
                 <div class="hidden lg:flex items-center space-x-4">
                     @guest
                         <div>
-                            <a href="{{ route('login') }}"
-                                class="mr-2 text-gray-300 hover:text-gray-100 font-medium">Masuk</a>
+                            <a href="{{ route('login') }}" class="mr-2 text-gray-300 hover:text-gray-100 font-medium">Masuk</a>
                             <a href="{{ route('register') }}"
                                 class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-700 transition">Daftar</a>
                         </div>
@@ -33,13 +32,7 @@
                         @if (auth()->user()->role === 'admin')
                             <a href="/admin/dashboard" class="text-indigo-600 font-medium">Dashboard Admin</a>
                         @elseif(auth()->user()->role === 'pengusaha')
-                            <div class="flex lg:hidden items-center space-x-4">
-                                <a href="/pengusaha/dashboard" class="text-gray-500 hover:text-gray-300 text-sm font-medium">Toko Saya</a>
-                                <a href="{{ route('login') }}"
-                                    class="text-gray-500 hover:text-gray-300 font-medium text-sm">Masuk</a>
-                                <a href="{{ route('register') }}"
-                                    class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg font-medium hover:bg-indigo-700 transition text-sm">Daftar</a>
-                            </div>
+                            <a href="/pengusaha/dashboard" class="text-indigo-600 font-medium">Toko Saya</a>
                         @else
                             <a href="{{ route('profile.edit') }}"
                                 class="text-gray-300 font-medium hover:text-gray-100">Profil</a>
@@ -67,7 +60,7 @@
     </main>
 
     {{-- Bottom Navigation Bar untuk Mobile --}}
-    <div class="block md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 z-16 shadow-lg">
+    <div class="block md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 z-50 shadow-lg">
         <div class="flex justify-around items-center h-16 px-2">
             <a href="{{ route('public.beranda') }}"
                 class="flex flex-col items-center justify-center text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('public.beranda') ? 'text-indigo-600' : '' }}">
@@ -78,18 +71,15 @@
 
             @auth
                 @if (auth()->user()->role === 'pengusaha')
-                    <a href="/pengusaha/dashboard" 
-                    class="flex flex-col items-center justify-center text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('pengusaha.dashboard') ? 'text-indigo-600' : '' }}">
-                        <x-heroicon-o-building-storefront class="w-7 h-7" />
-                        <span class="text-xs mt-1">Toko Saya</span>
-                    </a>
-                @endif
+                    <a href="/pengusaha/dashboard" class="text-indigo-600 font-medium">Toko Saya</a>
+                @else
                     <a href="{{ route('profile.edit') }}"
                         class="flex flex-col items-center justify-center text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('profile.edit') ? 'text-indigo-600' : '' }}">
                         <x-heroicon-o-user-circle
                             class="h-7 w-auto text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('profile.edit') ? 'text-indigo-600' : '' }}" />
                         <span class="text-xs mt-1">Profil</span>
                     </a>
+                @endif
             @endauth
         </div>
     </div>

@@ -15,13 +15,13 @@
             <x-heroicon-o-squares-2x2 class="w-5 h-5" />
             <span class="font-medium">Dashboard</span>
         </a>
-        <a href="{{ route('admin.dashboard') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('admin.dashboard') ? 'bg-prim1' : 'hover:bg-prim1' }}">
+        <a href="{{ route('admin.permintaan.index') }}"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('admin.permintaan.index') ? 'bg-prim1' : 'hover:bg-prim1' }}">
             <x-heroicon-o-document class="w-5 h-5" />
             <span class="font-medium">Permintaan Daftar Usaha</span>
         </a>
-        <a href="{{ route('admin.dashboard') }}"
-            class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('admin.dashboard') ? 'bg-prim1' : 'hover:bg-prim1' }}">
+        <a href="{{ route('admin.umkm.index') }}"
+            class="flex items-center gap-3 px-4 py-2.5 rounded-lg transition {{ request()->routeIs('admin.umkm.index') ? 'bg-prim1' : 'hover:bg-prim1' }}">
             <x-heroicon-o-building-storefront class="w-5 h-5" />
             <span class="font-medium">Usaha Terdaftar</span>
         </a>
