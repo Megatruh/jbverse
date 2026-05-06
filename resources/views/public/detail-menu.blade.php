@@ -1,11 +1,20 @@
 <x-layouts.public>
     {{-- <x-app-layout> --}}
+    <div class="h-90 bg-gray-200 relative">
+        @if ($menu->image)
+            <img src="{{ asset('storage/' . $menu->image) }}"
+                class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                alt="{{ $menu->name }}">
+        @else
+            <div class="w-full h-full flex items-center justify-center bg-pink-50 text-indigo-300 text-4xl">
+                🍽️</div>
+        @endif
+        <div class="w-auto h-auto absolute left-2 bottom-0 -mb-3 flex items-center gap-1 px-2 overflow-hidden">
+            <span
+                class="inline-block bg-indigo-900 text-gray-100 text-xs px-3 py-1 rounded-full font-semibold border border-indigo-100">{{ $menu->category }}</span>
+        </div>
+    </div>
     <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-
-        <a href="{{ route('umkm.detail', $umkm->slug) }}"
-            class="text-indigo-600 hover:text-indigo-800 text-sm font-medium inline-flex items-center mb-6 transition">
-            &larr; Kembali ke {{ $umkm->name }}
-        </a>
 
         @if (session('success'))
             <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg relative shadow-sm"
@@ -23,45 +32,43 @@
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
 
-            <div class="p-8 border-b border-gray-100">
-                <h1 class="text-3xl font-extrabold text-gray-900">{{ $menu->name }}</h1>
-                <p class="mt-3 text-gray-600 leading-relaxed">{{ $menu->description }}</p>
-                <div class="mt-4">
-                    <span
-                        class="inline-block bg-indigo-50 text-indigo-700 text-xs px-3 py-1 rounded-full font-semibold border border-indigo-100">{{ $menu->category }}</span>
+            <div class="p-5 relative">
+                <h1 class="text-xl font-bold text-gray-900">{{ $menu->name }}</h1>
+                <p class="mt-1 mb-8 text-lg font-bold text-indigo-950">
+                    Rp {{ number_format($menu->price, 0, ',', '.') }}
+                </p>
+                <div
+                    class="w-auto h-6 absolute left-2 ml-3 bottom-4 flex items-center gap-1 px-2 bg-yellow-100/40 rounded-lg overflow-hidden">
+                    <x-heroicon-s-star class="w-4 h-4 text-yellow-500" />
+                    <span class="text-xs text-yellow-600">3.0</span>
+                    <span class="text-xs">({{ $menu->reviews->count() }} ulasan)</span>
                 </div>
             </div>
+        </div>
 
-            <div class="p-8 bg-gray-50">
-                <h3 class="text-lg font-bold text-gray-900 mb-5">Detail Menu</h3>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
+            <a href="{{ route('umkm.detail', $umkm->slug) }}"
+                class="text-indigo-600 hover:text-indigo-800 text-sm font-medium inline-flex items-center mb-6 transition">
+                {{ $umkm->name }}
+            </a>
+        </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
-                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Ukuran</p>
-                        <p class="mt-1 text-sm font-bold text-gray-900">
-                            {{ $menu->ukuran ?: '-' }}
-                        </p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
-                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Varian</p>
-                        <p class="mt-1 text-sm font-bold text-gray-900">
-                            {{ $menu->variant ?: '-' }}
-                        </p>
-                    </div>
-                    <div class="bg-white rounded-xl border border-indigo-100 p-4 shadow-sm">
-                        <p class="text-xs font-semibold text-indigo-700 uppercase tracking-wider">Harga</p>
-                        <p class="mt-1 text-xl font-extrabold text-indigo-600">
-                            Rp {{ number_format($menu->price, 0, ',', '.') }}
-                        </p>
-                    </div>
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative">
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Detail Menu</h3>
+            <p class="mb-4 text-gray-600 leading-relaxed text-sm">{{ $menu->description }}</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <p class="text-sm font-bold text-gray-900">Ukuran:</p>
+                <div class="w-auto bg-gray-200 rounded-xl border border-gray-200 px-2 py-1 shadow-sm flex items-center gap-1 absolute">
+                    <p class="mt-1 text-sm text-gray-900">
+                        {{ $menu->ukuran ?: '-' }}
+                    </p>
                 </div>
-
-                @if ($menu->image)
-                    <div class="mt-6">
-                        <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}"
-                            class="w-full max-h-80 object-cover rounded-xl border border-gray-200 shadow-sm" />
-                    </div>
-                @endif
+                <p class="text-sm font-bold text-gray-900">Varian:</p>
+                <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
+                    <p class="mt-1 text-sm font-bold text-gray-900">
+                        {{ $menu->variant ?: '-' }}
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -127,7 +134,7 @@
 
                         <div class="flex gap-4">
                             <div
-                                class="h-12 w-12 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-full flex justify-center items-center shrink-0 border border-indigo-100">
+                                class="h-12 w-12 bg-linear-to-br from-indigo-100 to-indigo-200 rounded-full flex justify-center items-center shrink-0 border border-indigo-100">
                                 <span
                                     class="text-indigo-700 font-extrabold text-lg">{{ strtoupper(substr($review->user->name, 0, 1)) }}</span>
                             </div>

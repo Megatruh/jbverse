@@ -1,6 +1,6 @@
 <x-layouts.public>
     {{-- <x-app-layout> --}}
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12 relative">
         <div class="-mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-23 bg-header rounded-b-2xl sticky top-16 pb-8 z-10 shadow-sm">
             <h1 class="ml-4 py-4 text-xl font-bold text-gray-100 md:text-2xl lg:text-3xl xl:ml-6">Pilih Jajanan
                 Favoritmu Hari Ini!</h1>
@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2.5 justify-evenly">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2.5 justify-center">
             @forelse($menus as $menu)
                 <a href="{{ route('menu.detail', [$menu->umkm->slug, $menu->slug]) }}"
                     class="w-45 block h-75 sm:w-50 sm:max-w-55 md:w-55 md:max-w-60 lg:w-60 lg:max-w-75 xl:w-70 m-1 bg-white rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-gray-100 overflow-hidden group relative">
@@ -37,7 +37,7 @@
                     </div>
                     <div class="p-2 ml-1">
                         <h3 class="text-md font-semibold md:font-bold text-gray-900 group-hover:text-indigo-600">{{ $menu->name }}</h3>
-                        <p class="mt-1 text-xs text-gray-400">{{ $menu->umkm->name }}</p>
+                        <p class="mt-1 text-tiny sm:text-xs text-gray-400">{{ $menu->umkm->name }}</p>
                         <div class="absolute left-0 bottom-0 pb-2 pl-3">
                             <span class="text-sm font-bold text-indigo-600">Rp
                                 {{ number_format($menu->price, 0, ',', '.') }}</span>
