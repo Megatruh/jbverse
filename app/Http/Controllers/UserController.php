@@ -41,8 +41,9 @@ class UserController extends Controller
     {
         $query = $request->input('q');
 
-        // 1. Pencarian UMKM (Hanya yang sedang buka)
-        $umkms = Umkm::query()->where('is_open', true)
+        // // 1. Pencarian UMKM (Hanya yang sedang buka)
+        $umkms = Umkm::query()
+            // ->where('is_open', true)
             ->where(function($q) use ($query) {
                 $q->where('name', 'LIKE', "%{$query}%")
                   ->orWhere('description', 'LIKE', "%{$query}%");
@@ -50,7 +51,7 @@ class UserController extends Controller
             ->take(5) // Batasi 5 untuk dropdown suggestion
             ->get();
 
-        // 2. Pencarian Menu (Hanya dari toko yang sedang buka)
+        // // 2. Pencarian Menu (Hanya dari toko yang sedang buka)
         $menus = Menu::with('umkm')
             ->whereHas('umkm', function($q) {
                 $q->where('is_open', true);
@@ -66,16 +67,16 @@ class UserController extends Controller
         if ($request->wantsJson() || $request->ajax() || $request->header('Accept') == 'application/json') {
             return response()->json([
                 'umkms' => $umkms,
-                'menus' => $menus
+                // 'menus' => $menus
             ]);
         }
 
         // 4. Jika user menekan tombol "Enter" atau ikon kaca pembesar
         // Kita ambil data pagination-nya
         $menusPaginated = Menu::with('umkm')
-            ->whereHas('umkm', function($q) {
-                $q->where('is_open', true);
-            })
+            // ->whereHas('umkm', function($q) {
+            //     $q->where('is_open', true);
+            // })
             ->where(function($q) use ($query) {
                 $q->where('name', 'LIKE', "%{$query}%")
                   ->orWhere('category', 'LIKE', "%{$query}%");
