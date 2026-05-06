@@ -39,7 +39,7 @@
                         <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4">
                                 <div class="font-bold text-gray-900">{{ $user->umkm->name ?? 'Tanpa Nama' }}</div>
-                                <div class="text-xs text-gray-400">{{ $user->umkm->location ?? 'Lokasi belum diset' }}</div>
+                                {{-- <div class="text-xs text-gray-400">{{ $user->umkm->location ?? 'Lokasi belum diset' }}</div> --}}
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-600">{{ $user->name }}</td>
                             <td class="px-6 py-4">
