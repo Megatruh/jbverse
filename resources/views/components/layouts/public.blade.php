@@ -57,7 +57,7 @@
                 @guest
                     <div class="flex lg:hidden items-center space-x-4">
                         <a href="{{ route('login') }}"
-                            class="text-gray-500 hover:text-gray-300 font-medium text-sm">Masuk</a>
+                            class="text-gray-300 hover:text-gray-100 font-medium text-sm">Masuk</a>
                         <a href="{{ route('register') }}"
                             class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg font-medium hover:bg-indigo-700 transition text-sm">Daftar</a>
                     </div>
