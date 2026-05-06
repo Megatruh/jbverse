@@ -87,6 +87,7 @@ class PengusahaController extends Controller
     public function simpanProfil(Request $request)
     {
         $request->validate([
+            'name' => ['required', 'string', 'max:255'],
             'contact_number' => ['required', 'string', 'max:20'],
             'description' => ['required', 'string', 'max:2000'],
             'image_banner' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'], // Maks 2MB
@@ -110,6 +111,7 @@ class PengusahaController extends Controller
         }
 
         // Simpan data
+        $umkm->name = $request->name;
         $umkm->contact_number = $request->contact_number;
         $umkm->description = $request->description;
         $umkm->latitude = $request->latitude;

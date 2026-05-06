@@ -9,6 +9,12 @@
         @method('PATCH')
 
         <div class="mt-4">
+            <x-input-label for="name" :value="__('Nama UMKM')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" required autofocus />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+
+        <div class="mt-4">
             <x-input-label for="contact_number" :value="__('Nomor WhatsApp / Telepon')" />
             <x-text-input id="contact_number" class="block mt-1 w-full" type="number" name="contact_number" :value="old('contact_number', $umkm->contact_number)" required autofocus />
             <x-input-error :messages="$errors->get('contact_number')" class="mt-2" />
