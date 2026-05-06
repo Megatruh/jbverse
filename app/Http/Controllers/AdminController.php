@@ -121,7 +121,19 @@ class AdminController extends Controller
 
     public function indexUmkm(Request $request)
     {
+        $suspendedUmkms = User::query()
+            ->with('umkm')
+            ->where('role', 'pengusaha')
+            ->where('status', 'suspended')
+            ->latest()
+            ->paginate(5);
         $keyword = $request->input('keyword');
+        $pendingUmkms = User::query()
+            ->with('umkm')
+            ->where('role', 'pengusaha')
+            ->where('status', 'pending')
+            ->latest()
+            ->get();
 
         // Mengambil UMKM yang sudah aktif (approved) atau yang sedang disuspend
         $approvedUmkms = User::query()
@@ -139,7 +151,7 @@ class AdminController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('admin.umkm', compact('approvedUmkms'));
+        return view('admin.umkm', compact(['approvedUmkms','pendingUmkms','suspendedUmkms']));
     }
 
     public function permintaan()
