@@ -1,6 +1,20 @@
 <x-layouts.public>
+    <div class="-mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-23 bg-header rounded-b-2xl sticky top-16 pb-8 z-10 shadow-sm">
+        <h1 class="ml-4 py-4 text-xl font-bold text-gray-100 md:text-2xl lg:text-3xl xl:ml-6">Pilih Jajanan
+            Favoritmu Hari Ini!</h1>
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="block bg-gray-100 text-gray-800 relative rounded-lg">
+                <input type="text" placeholder="Cari makanan atau minuman..."
+                    class="w-full px-3 py-3 border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:outline-none rounded-lg">
+                <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                    <x-heroicon-o-magnifying-glass
+                        class="w-4 h-4 lg:w-5 lg:h-5 text-indigo-900 stroke-3 stroke-indigo-900" />
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="mb-12">
+        {{-- <div class="mb-12">
             <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl mb-4">Cari Menu dan UMKM</h1>
             <p class="text-xl text-gray-500 mb-8">Cari menu lezat atau toko UMKM favorit di JBVerse.</p>
 
@@ -13,7 +27,7 @@
                     Cari
                 </button>
             </form>
-        </div>
+        </div> --}}
 
         @if ($query)
             <div class="mb-8">
