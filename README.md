@@ -1,7 +1,3 @@
-<p align="center">
-	<img src="docs/banner.png" alt="JBVerse Banner" width="100%" />
-</p>
-
 <h1 align="center">JBVerse</h1>
 
 <p align="center">
