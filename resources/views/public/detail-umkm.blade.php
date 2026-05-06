@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
         {{-- Banner --}}
         <div class="-mx-4 sm:mx-0">
-            <div class="w-full h-48 md:h-64 overflow-hidden sm:rounded-xl">
+            <div class="w-full h-48 md:h-64 overflow-hidden sm:rounded-b-xl">
                 @if ($umkm->image_banner)
                     <img src="{{ asset('storage/' . $umkm->image_banner) }}" class="w-full h-full object-cover"
                         alt="{{ $umkm->name }}">
@@ -35,36 +35,18 @@
                     <p class="mt-3 text-gray-600 leading-relaxed">{{ $umkm->description }}</p>
 
                     {{-- Info tambahan: Lokasi, Jam Operasional, Google Maps --}}
-                    <div class="mt-5 block gap-x-6 gap-y-3 text-sm ">
+                    <div class="mt-5 block gap-x-6 gap-y-3 text-sm  ">
                         {{-- Lokasi / Alamat --}}
                         <div class="my-1 flex items-center gap-1 text-gray-600">
                             <a href="https://www.google.com/maps?q={{ $umkm->latitude }},{{ $umkm->longitude }}" target="_blank" class="gap-1 flex items-center text-gray-600 hover:text-indigo-800">
                                 <x-heroicon-o-map-pin class="w-4 h-4 text-gray-600" />
-                            
+
                             @if (!$umkm->latitude && !$umkm->longitude)
                                 <span>Alamat tidak tersedia</span>
                             @endif
                                 <span>JB Lanud</span>
                             </a>
                         </div>
-
-                        {{-- Jam Operasional --}}
-                        {{-- <div class="my-1 flex items-center gap-1 text-gray-600">
-                            <x-heroicon-o-clock class="w-4 h-4 text-gray-600" />
-                            <span>{{ $umkm->operational_hours ?? '16.00 - 23.00 WIB' }}</span>
-                        </div> --}}
-
-                        {{-- Link Google Maps (opsional) --}}
-                        @if ($umkm->google_maps_link ?? false)
-                            <a href="{{ $umkm->google_maps_link }}" target="_blank"
-                                class="text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4" />
-                                </svg>
-                                Buka di Google Maps
-                            </a>
-                        @endif
                     </div>
 
                     {{-- Tombol Laporan (hanya untuk user yang login) --}}

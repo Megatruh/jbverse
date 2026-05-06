@@ -1,6 +1,6 @@
 <x-layouts.public>
     {{-- <x-app-layout> --}}
-    <div class="h-90 bg-gray-200 relative">
+    <div class="h-90 max-w-4xl mx-auto sm:px-6 md:rounded-b-2xl relative">
         @if ($menu->image)
             <img src="{{ asset('storage/' . $menu->image) }}"
                 class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
@@ -9,7 +9,7 @@
             <div class="w-full h-full flex items-center justify-center bg-pink-50 text-indigo-300 text-4xl">
                 🍽️</div>
         @endif
-        <div class="w-auto h-auto absolute left-2 bottom-0 -mb-3 flex items-center gap-1 px-2 overflow-hidden">
+        <div class="w-auto h-auto absolute left-2 md:left-6 bottom-0 -mb-3 flex items-center gap-1 px-2 overflow-hidden">
             <span
                 class="inline-block bg-indigo-900 text-gray-100 text-xs px-3 py-1 rounded-full font-semibold border border-indigo-100">{{ $menu->category }}</span>
         </div>
@@ -37,7 +37,8 @@
                 <p class="mt-1 mb-8 text-lg font-bold text-indigo-950">
                     Rp {{ number_format($menu->price, 0, ',', '.') }}
                 </p>
-                
+
+
                 <div
                     class="w-auto h-6 absolute left-2 ml-3 bottom-4 flex items-center gap-1 px-2 bg-yellow-100/40 rounded-lg overflow-hidden">
                     <x-heroicon-s-star class="w-4 h-4 text-yellow-500" />
@@ -71,13 +72,11 @@
                     </a>
                     {{-- Status Buka / Tutup --}}
                     <div class="flex items-center">
-                        @if($umkm->latitude && $umkm->longitude)
-                        <a 
-                        href="https://www.google.com/maps?q={{ $umkm->latitude }},{{ $umkm->longitude }}" 
-                        target="_blank"
-                        class="shrink-0 inline-flex gap-1.5 px-3 py-1.5 text-xs transition-all active:scale-95 cursorpointer"
-                        title="Cek Lokasi di Google Maps"
-                        >
+                        @if ($umkm->latitude && $umkm->longitude)
+                            <a href="https://www.google.com/maps?q={{ $umkm->latitude }},{{ $umkm->longitude }}"
+                                target="_blank"
+                                class="shrink-0 inline-flex gap-1.5 px-3 py-1.5 text-xs transition-all active:scale-95 cursorpointer"
+                                title="Cek Lokasi di Google Maps">
                                 <x-heroicon-o-map-pin class="w-4 h-4 text-gray-900" />
 
                                 Lokasi
@@ -85,7 +84,7 @@
                         @endif
                         <span class="text-xs font-medium {{ $umkm->is_open ? 'text-green-600' : 'text-red-600' }}">
                             {{ $umkm->is_open ? '● Buka' : '● Tutup' }}
-                        </span>                        
+                        </span>
                     </div>
                 </div>
             </div>
@@ -203,7 +202,8 @@
                                 <div class="flex justify-between items-start">
                                     <div>
                                         <h4 class="text-sm font-bold text-gray-900">{{ $review->user->name }}</h4>
-                                        <p class="text-xs text-gray-400">{{ $review->created_at->diffForHumans() }}</p>
+                                        <p class="text-xs text-gray-400">{{ $review->created_at->diffForHumans() }}
+                                        </p>
                                         <!-- Rating bintang di bawah nama & waktu -->
                                         <div class="text-yellow-400 text-xs mt-1 tracking-wide">
                                             {{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}
