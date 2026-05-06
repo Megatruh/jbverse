@@ -42,6 +42,7 @@
             <div class="space-y-3">
                 @forelse ($menus as $item)
                     <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <a href="{{ route('menu.detail', [$item->umkm->slug, $item->slug]) }}">
                         <div class="flex items-start gap-3">
                             <!-- Image -->
                             <div class="shrink-0">
@@ -85,6 +86,7 @@
                                 </div>
                             </div>
                         </div>
+                        </a>
                     </div>
                 @empty
                     <div class="text-center py-12">
@@ -110,7 +112,7 @@
 
         <!-- FAB Button -->
         <a href="{{ route('pengusaha.menu.create') }}"
-            class="fixed bottom-18 right-4 w-16 h-16 bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full flex items-center justify-center shadow-lg transition">
+            class="fixed bottom-1 right-4 w-16 h-16 bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full flex items-center justify-center shadow-lg transition">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
