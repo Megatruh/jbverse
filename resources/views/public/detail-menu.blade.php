@@ -46,81 +46,107 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
-            <a href="{{ route('umkm.detail', $umkm->slug) }}"
-                class="text-indigo-600 hover:text-indigo-800 text-sm font-medium inline-flex items-center mb-6 transition">
-                {{ $umkm->name }}
-            </a>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative">
-            <h3 class="text-lg font-bold text-gray-900 mb-2">Detail Menu</h3>
-            <p class="mb-4 text-gray-600 leading-relaxed text-sm">{{ $menu->description }}</p>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <p class="text-sm font-bold text-gray-900">Ukuran:</p>
-                <div class="w-auto bg-gray-200 rounded-xl border border-gray-200 px-2 py-1 shadow-sm flex items-center gap-1 absolute">
-                    <p class="mt-1 text-sm text-gray-900">
-                        {{ $menu->ukuran ?: '-' }}
-                    </p>
+        {{-- Kartu UMKM --}}
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 my-4">
+            <div class="flex items-center gap-3">
+                {{-- Avatar menggunakan image_banner UMKM --}}
+                <div class="h-12 w-12 rounded-full overflow-hidden bg-indigo-100 shrink-0">
+                    @if ($umkm->image_banner)
+                        <img src="{{ asset('storage/' . $umkm->image_banner) }}" alt="{{ $umkm->name }}"
+                            class="w-full h-full object-cover">
+                    @else
+                        {{-- Fallback: tampilkan inisial jika tidak ada gambar --}}
+                        <div class="w-full h-full flex items-center justify-center bg-indigo-100">
+                            <span
+                                class="text-indigo-700 font-bold text-sm">{{ strtoupper(substr($umkm->name, 0, 2)) }}</span>
+                        </div>
+                    @endif
                 </div>
-                <p class="text-sm font-bold text-gray-900">Varian:</p>
-                <div class="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
-                    <p class="mt-1 text-sm font-bold text-gray-900">
-                        {{ $menu->variant ?: '-' }}
-                    </p>
+
+                <div class="flex-1">
+                    <a href="{{ route('umkm.detail', $umkm->slug) }}"
+                        class="text-md font-bold text-gray-900 hover:text-indigo-600 transition">
+                        {{ $umkm->name }}
+                    </a>
+                    {{-- Status Buka / Tutup --}}
+                    <div>
+                        <span class="text-xs font-medium {{ $umkm->is_open ? 'text-green-600' : 'text-red-600' }}">
+                            {{ $umkm->is_open ? '● Buka' : '● Tutup' }}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+        <div class="bg-white rounded-2xl shadow-sm border-gray-100 p-5">
+            <h3 class="text-lg font-bold text-gray-900 mb-2">Detail Menu</h3>
+            <p class="mb-4 text-gray-600 leading-relaxed text-sm">{{ $menu->description }}</p>
+
+            {{-- Ukuran --}}
+            <div class="mb-4">
+                <span class="text-sm font-bold text-gray-900 block mb-1">Ukuran:</span>
+                <div class="inline-block bg-gray-200 rounded-xl px-3 py-1 shadow-sm">
+                    <span class="text-sm text-gray-900">{{ $menu->ukuran ?: '-' }}</span>
+                </div>
+            </div>
+
+            {{-- Varian --}}
+            <div>
+                <span class="text-sm font-bold text-gray-900 block mb-1">Varian:</span>
+                <div class="inline-block bg-gray-200 rounded-xl px-3 py-1 shadow-sm">
+                    <span class="text-sm text-gray-900">{{ $menu->variant ?: '-' }}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div x-data="{ showUlasanForm: false }" class="mt-4 bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
             @php
                 $averageRating = $menu->reviews->count() > 0 ? round($menu->reviews->avg('rating'), 1) : 0;
                 $ratingCount = $menu->reviews->count();
             @endphp
 
             <div class="flex items-center justify-between mb-6">
-                <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <h2 class="text-md md:text-lg font-bold text-gray-900 flex items-center gap-2">
                     Ulasan Pelanggan
-                    <span
-                        class="text-sm font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ $ratingCount }}</span>
                 </h2>
-                @if ($ratingCount > 0)
-                    <div class="flex items-center gap-3 bg-amber-50 px-4 py-3 rounded-lg border border-amber-100">
-                        <div class="text-right">
-                            <p class="text-sm font-semibold text-gray-600">Rating Rata-rata</p>
-                            <p class="text-2xl font-extrabold text-amber-600">{{ $averageRating }}/5</p>
-                        </div>
-                        <div class="text-amber-400 text-lg tracking-widest">
-                            {{ str_repeat('★', floor($averageRating)) }}{{ $averageRating - floor($averageRating) >= 0.5 ? '½' : '' }}{{ str_repeat('☆', 5 - ceil($averageRating)) }}
-                        </div>
-                    </div>
-                @else
-                    <div class="text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">
-                        Belum ada rating
-                    </div>
-                @endif
-            </div>
 
-            @auth
-                @if (auth()->user()->role === 'user' || auth()->user()->role === 'pengusaha')
+                @auth
                     @php
-                        // Cek apakah user yang login sudah pernah mereview menu ini
-                        $sudahReview = $menu->reviews->contains('user_id', auth()->user()->id);
+                        $user = auth()->user();
+                        $hasReviewed = $menu->reviews()->where('user_id', $user->id)->exists();
+                        $canReview = ($user->role === 'user' || $user->role === 'pengusaha') && !$hasReviewed;
                     @endphp
 
-                    @if ($sudahReview)
-                        <div class="mb-8 p-5 bg-green-50 rounded-xl border border-green-200 text-center">
-                            <p class="text-green-700 font-medium">Terima kasih! Anda sudah memberikan ulasan untuk menu ini.
-                            </p>
-                        </div>
-                    @else
+                    @if ($canReview)
+                        <button @click="showUlasanForm = !showUlasanForm"
+                            class="inline-flex items-center gap-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-medium px-4 py-2 rounded-full transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4">
+                                </path>
+                            </svg>
+                            Tulis Ulasan
+                        </button>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}"
+                        class="inline-flex items-center gap-1 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium px-4 py-2 rounded-full transition">
+                        Masuk untuk tulis ulasan
+                    </a>
+                @endauth
+            </div>
+
+            {{-- FORM ULASAN dipindahkan ke sini (setelah div flex) --}}
+            @auth
+                @if (isset($canReview) && $canReview)
+                    <div x-show="showUlasanForm" x-cloak class="mb-6 transition-all duration-300">
                         <form action="{{ route('ulasan.store', ['umkm' => $umkm->slug, 'menu' => $menu->slug]) }}"
-                            method="POST" class="mb-8 p-6 bg-gray-50 rounded-xl border border-gray-200">
+                            method="POST" class="p-6 bg-gray-50 rounded-xl border border-gray-200">
                             @csrf
                             <div class="mb-4">
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Beri Rating</label>
                                 <select name="rating"
-                                    class="border-gray-300 rounded-lg shadow-sm w-full sm:w-48 focus:ring-indigo-500 focus:border-indigo-500"
+                                    class="px-2 py-2 border-gray-300 rounded-lg shadow-sm w-full sm:w-60 focus:ring-indigo-500 focus:border-indigo-500"
                                     required>
                                     <option value="5">⭐⭐⭐⭐⭐ Sangat Baik</option>
                                     <option value="4">⭐⭐⭐⭐ Baik</option>
@@ -130,70 +156,58 @@
                                 </select>
                             </div>
                             <div class="mb-4">
-                                <label class="block text-sm font-semibold text-gray-700 mb-2">Tulis Pengalaman Anda</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Ceritakan Pengalaman
+                                    Anda</label>
                                 <textarea name="comment" rows="3"
-                                    class="border-gray-300 rounded-lg shadow-sm w-full focus:ring-indigo-500 focus:border-indigo-500"
-                                    placeholder="Bagaimana rasa, porsi, atau penyajiannya?" required></textarea>
+                                    class="p-3 text-xs sm:text-sm border-gray-300 rounded-lg shadow-sm w-full focus:ring-indigo-500 focus:border-indigo-500"
+                                    placeholder="Rasa, porsi, pelayanan..." required></textarea>
                             </div>
-                            <button type="submit"
-                                class="bg-indigo-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-700 transition shadow-sm">Kirim
-                                Ulasan</button>
+                            <div class="flex gap-2">
+                                <button type="submit"
+                                    class="bg-prim1 text-sm md:text-md text-white px-6 py-2 rounded-lg font-medium hover:bg-prim2">Kirim
+                                    Ulasan</button>
+                                <button type="button" @click="showUlasanForm = false"
+                                    class="text-sm md:text-md bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium hover:bg-gray-300">Batal</button>
+                            </div>
                         </form>
-                    @endif
+                    </div>
                 @endif
-            @else
-                <div class="bg-indigo-50 rounded-xl p-5 mb-8 text-sm text-indigo-800 text-center border border-indigo-100">
-                    Pernah mencoba menu ini? <a href="{{ route('login') }}"
-                        class="font-bold underline hover:text-indigo-900">Masuk</a> atau <a href="{{ route('register') }}"
-                        class="font-bold underline hover:text-indigo-900">Daftar</a> untuk membagikan pengalaman Anda.
-                </div>
             @endauth
-
             <div class="space-y-6">
                 @forelse($menu->reviews as $review)
                     <div x-data="{ modeEditUlasan: false, modeEditBalasan: false }"
-                        class="p-4 bg-white hover:bg-gray-50 rounded-xl transition border border-gray-100 shadow-sm relative">
+                        class="p-4 bg-white hover:bg-gray-50 rounded-xl transition border border-gray-100 shadow-sm mb-4">
 
-                        <div class="flex gap-4">
-                            <div
-                                class="h-12 w-12 bg-linear-to-br from-indigo-100 to-indigo-200 rounded-full flex justify-center items-center shrink-0 border border-indigo-100">
+                        <div class="flex gap-3">
+                            <!-- Avatar -->
+                            <div class="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
                                 <span
-                                    class="text-indigo-700 font-extrabold text-lg">{{ strtoupper(substr($review->user->name, 0, 1)) }}</span>
+                                    class="text-indigo-700 font-bold text-sm">{{ strtoupper(substr($review->user->name, 0, 2)) }}</span>
                             </div>
 
                             <div class="flex-1">
+                                <!-- Nama & waktu -->
                                 <div class="flex justify-between items-start">
-                                    <div class="flex items-center gap-3">
+                                    <div>
                                         <h4 class="text-sm font-bold text-gray-900">{{ $review->user->name }}</h4>
-                                        <span
-                                            class="text-xs text-gray-400">{{ $review->updated_at->diffForHumans() }}</span>
-                                    </div>
-
-                                    @if (auth()->check() && auth()->id() === $review->user_id)
-                                        <div class="flex gap-2">
-                                            <button @click="modeEditUlasan = !modeEditUlasan"
-                                                class="text-xs text-blue-500 hover:underline">Edit</button>
-                                            <form action="{{ route('ulasan.destroy', $review->id) }}" method="POST"
-                                                onsubmit="return confirm('Yakin ingin menghapus ulasan ini?');">
-                                                @csrf @method('DELETE')
-                                                <button type="submit"
-                                                    class="text-xs text-red-500 hover:underline">Hapus</button>
-                                            </form>
+                                        <p class="text-xs text-gray-400">{{ $review->created_at->diffForHumans() }}</p>
+                                        <!-- Rating bintang di bawah nama & waktu -->
+                                        <div class="text-yellow-400 text-xs mt-1 tracking-wide">
+                                            {{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}
                                         </div>
-                                    @endif
-                                </div>
-
-                                <div x-show="!modeEditUlasan">
-                                    <div class="text-yellow-400 text-sm mt-1 tracking-widest">
-                                        {{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}
                                     </div>
-                                    <p class="mt-2 text-sm text-gray-700 leading-relaxed">{{ $review->comment }}</p>
                                 </div>
 
+                                <!-- Komentar -->
+                                <div x-show="!modeEditUlasan" class="mt-2">
+                                    <p class="text-sm text-gray-700 leading-relaxed">{{ $review->comment }}</p>
+                                </div>
+
+                                <!-- Form edit ulasan -->
                                 @if (auth()->check() && auth()->id() === $review->user_id)
                                     <form x-show="modeEditUlasan" style="display: none;"
                                         action="{{ route('ulasan.update', $review->id) }}" method="POST"
-                                        class="mt-3 bg-indigo-50 p-4 rounded-lg">
+                                        class="mt-3 bg-indigo-50 p-3 rounded-lg">
                                         @csrf @method('PUT')
                                         <select name="rating"
                                             class="mb-2 text-sm border-gray-300 rounded-lg w-full sm:w-48" required>
@@ -208,37 +222,45 @@
                                             <option value="1" {{ $review->rating == 1 ? 'selected' : '' }}>⭐
                                             </option>
                                         </select>
-                                        <textarea name="comment" rows="2" class="mb-2 text-sm border-gray-300 rounded-lg w-full" required>{{ $review->comment }}</textarea>
-                                        <div class="flex gap-2">
+                                        <textarea name="comment" rows="2" class="w-full text-sm border-gray-300 rounded-lg" required>{{ $review->comment }}</textarea>
+                                        <div class="flex gap-2 mt-2">
                                             <button type="submit"
-                                                class="bg-indigo-600 text-white px-3 py-1 text-xs rounded hover:bg-indigo-700">Simpan
-                                                Perubahan</button>
+                                                class="bg-indigo-600 text-white px-3 py-1 text-xs rounded">Simpan</button>
                                             <button type="button" @click="modeEditUlasan = false"
-                                                class="bg-gray-300 text-gray-700 px-3 py-1 text-xs rounded hover:bg-gray-400">Batal</button>
+                                                class="bg-gray-300 px-3 py-1 text-xs rounded">Batal</button>
                                         </div>
                                     </form>
+
+                                    <!-- Tombol Edit/Hapus di bawah komentar -->
+                                    <div class="flex gap-3 mt-2 text-xs" x-show="!modeEditUlasan">
+                                        <button @click="modeEditUlasan = true"
+                                            class="text-blue-500 hover:underline">Edit</button>
+                                        <form action="{{ route('ulasan.destroy', $review->id) }}" method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus ulasan ini?');"
+                                            class="inline">
+                                            @csrf @method('DELETE')
+                                            <button type="submit" class="text-red-500 hover:underline">Hapus</button>
+                                        </form>
+                                    </div>
                                 @endif
 
-                                <div class="mt-4">
+                                <!-- Balasan dari pemilik usaha -->
+                                <div class="mt-3">
                                     @if ($review->reply)
                                         <div x-show="!modeEditBalasan"
-                                            class="p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-500 relative">
+                                            class="p-3 bg-gray-50 rounded-lg border-l-4 border-indigo-400 text-sm">
                                             <div class="flex justify-between items-center mb-1">
-                                                <div class="flex items-center gap-2">
-                                                    <span
-                                                        class="text-xs font-bold text-indigo-800 uppercase tracking-wider">Balasan
-                                                        dari {{ $umkm->name }}</span>
-                                                </div>
-
+                                                <span class="text-xs font-semibold text-indigo-800">Balasan dari
+                                                    {{ $umkm->name }}</span>
                                                 @if (auth()->check() && auth()->user()->role === 'pengusaha' && auth()->user()->umkm->id === $menu->umkm_id)
                                                     <div class="flex gap-2">
                                                         <button @click="modeEditBalasan = true"
-                                                            class="text-xs text-blue-600 hover:underline">Edit
-                                                            Balasan</button>
+                                                            class="text-xs text-blue-600 hover:underline">Edit</button>
                                                         <form
                                                             action="{{ route('pengusaha.ulasan.hapus-balasan', $review->id) }}"
                                                             method="POST"
-                                                            onsubmit="return confirm('Hapus balasan ini?');">
+                                                            onsubmit="return confirm('Hapus balasan ini?');"
+                                                            class="inline">
                                                             @csrf @method('DELETE')
                                                             <button type="submit"
                                                                 class="text-xs text-red-600 hover:underline">Hapus</button>
@@ -246,32 +268,30 @@
                                                     </div>
                                                 @endif
                                             </div>
-                                            <p class="text-sm text-gray-800 italic">"{{ $review->reply }}"</p>
+                                            <p class="text-gray-700 italic">“{{ $review->reply }}”</p>
                                         </div>
                                     @else
                                         @if (auth()->check() && auth()->user()->role === 'pengusaha' && auth()->user()->umkm->id === $menu->umkm_id)
                                             <button x-show="!modeEditBalasan" @click="modeEditBalasan = true"
-                                                class="text-xs font-semibold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200 hover:bg-indigo-100">
-                                                ↪ Balas Ulasan Ini
+                                                class="text-xs font-medium text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-200">
+                                                ↪ Balas Ulasan
                                             </button>
                                         @endif
                                     @endif
 
+                                    <!-- Form balasan -->
                                     @if (auth()->check() && auth()->user()->role === 'pengusaha' && auth()->user()->umkm->id === $menu->umkm_id)
                                         <form x-show="modeEditBalasan" style="display: none;"
                                             action="{{ route('pengusaha.ulasan.balas', $review->id) }}"
-                                            method="POST"
-                                            class="mt-2 bg-gray-100 p-4 rounded-lg border border-gray-200">
+                                            method="POST" class="mt-2 bg-gray-100 p-3 rounded-lg">
                                             @csrf
-                                            <label class="block text-xs font-bold text-gray-700 mb-1">Tulis Balasan
-                                                Anda:</label>
-                                            <textarea name="reply" rows="2" class="text-sm border-gray-300 rounded-lg w-full mb-2" required>{{ $review->reply }}</textarea>
-                                            <div class="flex gap-2">
+                                            <textarea name="reply" rows="2" class="w-full text-sm border-gray-300 rounded-lg"
+                                                placeholder="Tulis balasan...">{{ $review->reply }}</textarea>
+                                            <div class="flex gap-2 mt-2">
                                                 <button type="submit"
-                                                    class="bg-indigo-600 text-white px-3 py-1 text-xs rounded hover:bg-indigo-700">Kirim
-                                                    Balasan</button>
+                                                    class="bg-indigo-600 text-white px-3 py-1 text-xs rounded">Kirim</button>
                                                 <button type="button" @click="modeEditBalasan = false"
-                                                    class="bg-gray-300 text-gray-700 px-3 py-1 text-xs rounded hover:bg-gray-400">Batal</button>
+                                                    class="bg-gray-300 px-3 py-1 text-xs rounded">Batal</button>
                                             </div>
                                         </form>
                                     @endif
