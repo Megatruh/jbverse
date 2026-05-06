@@ -18,7 +18,7 @@ class UmkmFactory extends Factory
             'user_id' => User::factory()->pengusaha(), 
             'name' => fake()->company(),
             // Kolom 'slug' tidak perlu ditulis karena sudah ditangani otomatis oleh Model (booted event)
-            'contact_number' => fake()->phoneNumber(),
+            'contact_number' => "085678910111",
             'description' => fake()->paragraph(),
             'is_open' => fake()->boolean(80), // 80% kemungkinan buka
             'image_banner' => null, // Biarkan kosong atau isi dengan URL gambar placeholder

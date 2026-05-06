@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Umkm;
 use App\Models\Menu;
-use App\Models\Review;
 use App\Models\Report;
+use App\Models\Review;
+use App\Models\Umkm;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function beranda()
     {
+        $user = Auth::user();
+
+        if ($user?->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if ($user?->role === 'pengusaha') {
+            return redirect()->route('pengusaha.dashboard');
+        }
         // Ambil menus dari UMKM yang sedang buka
         $menus = Menu::query()
             ->whereHas('umkm', function ($query) {
@@ -21,7 +31,7 @@ class UserController extends Controller
             ->latest()
             ->paginate(12);
 
-        return view('public.beranda', compact('menus'));
+        return view('public.beranda', compact('menus', 'user'));
     }
 
     public function detailToko(Umkm $umkm)
@@ -77,7 +87,7 @@ class UserController extends Controller
             'user_id'  => $request->user()->id,
             'umkm_id'  => $umkm->id,
             'reason'   => $request->reason,
-            'status'   => 'pending',
+            'status'   => 'diproses',
         ]);
 
         return redirect()->back()->with('success', 'Laporan berhasil dikirim ke Admin untuk ditindaklanjuti.');
@@ -119,11 +129,12 @@ class UserController extends Controller
         if (strlen($query) >= 2) {
             // Cari Menu
             $menus = Menu::query()
-                ->with('umkm')
+                ->with('umkm:id,name,slug,description,price')
                 ->where('name', 'like', '%' . $query . '%')
                 ->whereHas('umkm', function ($q) {
                     $q->where('is_open', true);
                 })
+                ->select('id', 'umkm_id', 'name', 'slug', 'price')
                 ->limit(10)
                 ->get();
 
@@ -131,14 +142,30 @@ class UserController extends Controller
             $umkms = Umkm::query()
                 ->where('name', 'like', '%' . $query . '%')
                 ->where('is_open', true)
+                ->select('id', 'name', 'slug', 'description')
                 ->limit(10)
                 ->get();
         }
 
         if ($request->wantsJson()) {
             return response()->json([
-                'menus' => $menus,
-                'umkms' => $umkms,
+                'menus' => $menus->map(fn($menu) => [
+                    'id' => $menu->id,
+                    'name' => $menu->name,
+                    'slug' => $menu->slug,
+                    'price' => $menu->price,
+                    'umkm' => [
+                        'id' => $menu->umkm->id,
+                        'name' => $menu->umkm->name,
+                        'slug' => $menu->umkm->slug,
+                    ]
+                ]),
+                'umkms' => $umkms->map(fn($umkm) => [
+                    'id' => $umkm->id,
+                    'name' => $umkm->name,
+                    'slug' => $umkm->slug,
+                    'description' => $umkm->description,
+                ]),
             ]);
         }
 

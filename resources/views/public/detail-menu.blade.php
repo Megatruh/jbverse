@@ -73,11 +73,33 @@
         </div>
 
         <div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-            <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                Ulasan Pelanggan
-                <span
-                    class="text-sm font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ $menu->reviews->count() }}</span>
-            </h2>
+            @php
+                $averageRating = $menu->reviews->count() > 0 ? round($menu->reviews->avg('rating'), 1) : 0;
+                $ratingCount = $menu->reviews->count();
+            @endphp
+
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    Ulasan Pelanggan
+                    <span
+                        class="text-sm font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-full">{{ $ratingCount }}</span>
+                </h2>
+                @if ($ratingCount > 0)
+                    <div class="flex items-center gap-3 bg-amber-50 px-4 py-3 rounded-lg border border-amber-100">
+                        <div class="text-right">
+                            <p class="text-sm font-semibold text-gray-600">Rating Rata-rata</p>
+                            <p class="text-2xl font-extrabold text-amber-600">{{ $averageRating }}/5</p>
+                        </div>
+                        <div class="text-amber-400 text-lg tracking-widest">
+                            {{ str_repeat('★', floor($averageRating)) }}{{ $averageRating - floor($averageRating) >= 0.5 ? '½' : '' }}{{ str_repeat('☆', 5 - ceil($averageRating)) }}
+                        </div>
+                    </div>
+                @else
+                    <div class="text-sm text-gray-500 bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">
+                        Belum ada rating
+                    </div>
+                @endif
+            </div>
 
             @auth
                 @if (auth()->user()->role === 'user' || auth()->user()->role === 'pengusaha')
