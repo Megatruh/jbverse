@@ -33,12 +33,16 @@
                         @if (auth()->user()->role === 'admin')
                             <a href="/admin/dashboard" class="text-indigo-600 font-medium">Dashboard Admin</a>
                         @elseif(auth()->user()->role === 'pengusaha')
-                            <div class="flex lg:hidden items-center space-x-4">
-                                <a href="/pengusaha/dashboard" class="text-gray-500 hover:text-gray-300 text-sm font-medium">Toko Saya</a>
-                                <a href="{{ route('login') }}"
-                                    class="text-gray-500 hover:text-gray-300 font-medium text-sm">Masuk</a>
-                                <a href="{{ route('register') }}"
-                                    class="bg-indigo-600 text-white px-3 py-1.5 rounded-lg font-medium hover:bg-indigo-700 transition text-sm">Daftar</a>
+                            <div class="hidden lg:flex items-center space-x-8">
+                                <a href="/pengusaha/dashboard"
+                                    class="text-gray-300 hover:text-gray-100 font-medium">Toko Saya</a>
+                                <a href="{{ route('profile.edit') }}"
+                                    class="text-gray-300 font-medium hover:text-gray-100">Profil</a>
+                                <form method="POST" action="{{ route('logout') }}" class="inline">
+                                    @csrf
+                                    <button type="submit"
+                                        class="text-red-500 hover:text-red-700 font-medium">Keluar</button>
+                                </form>
                             </div>
                         @else
                             <a href="{{ route('profile.edit') }}"
@@ -78,18 +82,15 @@
 
             @auth
                 @if (auth()->user()->role === 'pengusaha')
-                    <a href="/pengusaha/dashboard" 
-                    class="flex flex-col items-center justify-center text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('pengusaha.dashboard') ? 'text-indigo-600' : '' }}">
-                        <x-heroicon-o-building-storefront class="w-7 h-7" />
-                        <span class="text-xs mt-1">Toko Saya</span>
-                    </a>
-                @endif
+                    <a href="/pengusaha/dashboard" class="text-indigo-600 font-medium">Toko Saya</a>
+                @else
                     <a href="{{ route('profile.edit') }}"
                         class="flex flex-col items-center justify-center text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('profile.edit') ? 'text-indigo-600' : '' }}">
                         <x-heroicon-o-user-circle
                             class="h-7 w-auto text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('profile.edit') ? 'text-indigo-600' : '' }}" />
                         <span class="text-xs mt-1">Profil</span>
                     </a>
+                @endif
             @endauth
         </div>
     </div>

@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Menu; 
 use App\Models\Review;
 use App\Models\Umkm;
-use App\Models\Menu; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 
 class PengusahaController extends Controller
@@ -166,6 +167,7 @@ class PengusahaController extends Controller
 
         // Update data teks
         $umkm->name = $request->name;
+        $umkm->slug = Str::slug($request->name);
         $umkm->contact_number = $request->contact_number;
         $umkm->description = $request->description;
 
@@ -328,6 +330,7 @@ class PengusahaController extends Controller
         $dataToUpdate = [
             'name' => $request->name,
             'category' => $request->category,
+            'slug' => Str::slug($request->name),
             'description' => $request->description ?? '',
             'ukuran' => $request->ukuran,
             'variant' => $request->variant,

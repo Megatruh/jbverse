@@ -43,9 +43,9 @@
                         class="block px-4 py-2 hover:bg-gray-100 text-sm rounded-t-lg">
                         Profile
                     </a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-sm">
+                    {{-- <a href="#" class="block px-4 py-2 hover:bg-gray-100 text-sm">
                         Settings
-                    </a>
+                    </a> --}}
                     <form method="POST" action="{{ route('logout') }}" class="block">
                         @csrf
                         <button type="submit"

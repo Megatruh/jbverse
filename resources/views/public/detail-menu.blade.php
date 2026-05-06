@@ -37,6 +37,7 @@
                 <p class="mt-1 mb-8 text-lg font-bold text-indigo-950">
                     Rp {{ number_format($menu->price, 0, ',', '.') }}
                 </p>
+                
                 <div
                     class="w-auto h-6 absolute left-2 ml-3 bottom-4 flex items-center gap-1 px-2 bg-yellow-100/40 rounded-lg overflow-hidden">
                     <x-heroicon-s-star class="w-4 h-4 text-yellow-500" />
@@ -69,10 +70,22 @@
                         {{ $umkm->name }}
                     </a>
                     {{-- Status Buka / Tutup --}}
-                    <div>
+                    <div class="flex items-center">
+                        @if($umkm->latitude && $umkm->longitude)
+                        <a 
+                        href="https://www.google.com/maps?q={{ $umkm->latitude }},{{ $umkm->longitude }}" 
+                        target="_blank"
+                        class="shrink-0 inline-flex gap-1.5 px-3 py-1.5 text-xs transition-all active:scale-95 cursorpointer"
+                        title="Cek Lokasi di Google Maps"
+                        >
+                                <x-heroicon-o-map-pin class="w-4 h-4 text-gray-900" />
+
+                                Lokasi
+                            </a>
+                        @endif
                         <span class="text-xs font-medium {{ $umkm->is_open ? 'text-green-600' : 'text-red-600' }}">
                             {{ $umkm->is_open ? '● Buka' : '● Tutup' }}
-                        </span>
+                        </span>                        
                     </div>
                 </div>
             </div>

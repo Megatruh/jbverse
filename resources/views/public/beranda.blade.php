@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2.5 justify-center">
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2.5 justify-center">
             @forelse($menus as $menu)
                 <a href="{{ route('menu.detail', [$menu->umkm->slug, $menu->slug]) }}"
                     class="w-45 block h-75 sm:w-50 sm:max-w-55 md:w-55 md:max-w-60 lg:w-60 lg:max-w-75 xl:w-70 m-1 bg-white rounded-2xl shadow-sm hover:shadow-xl transition duration-300 border border-gray-100 overflow-hidden group relative">
