@@ -79,10 +79,10 @@
         <div class="mt-4">
             <x-input-label :value="__('Daftar sebagai:')" />
 
-            <div x-data="{ role: '{{ old('role', 'pengguna') }}' }" class="grid grid-cols-2 gap-4 mt-2">
+            <div x-data="{ role: '{{ old('role', 'user') }}' }" class="grid grid-cols-2 gap-4 mt-2">
                 {{-- Opsi Pengguna --}}
                 <label @click="role = 'user'"
-                    :class="role === 'pengguna' ? 'border-gray-700 bg-indigo-50' :
+                    :class="role === 'user' ? 'border-gray-700 bg-indigo-50' :
                         'opacity-50 border-gray-300 hover:border-gray-500'"
                     class="relative flex flex-col items-center justify-center cursor-pointer border rounded-lg p-4 transition duration-200">
 

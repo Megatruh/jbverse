@@ -127,8 +127,16 @@
                                         <div class="font-bold text-gray-900">{{ optional($user->umkm)->name ?? 'N/A' }}</div>
                                         <div class="text-gray-500">{{ $user->name }}</div>
                                     </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        {{ optional($user->umkm)->contact_number ?? '-' }}
+                                    <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                        @php
+                                            $contactNumber = optional($user->umkm)->contact_number;
+                                            $waNumber = $contactNumber ? (substr($contactNumber, 0, 1) === '0' ? '62' . substr($contactNumber, 1) : $contactNumber) : '';
+                                        @endphp
+                                        @if($contactNumber)
+                                            <a href="https://wa.me/{{ $waNumber }}" target="_blank" class="text-indigo-600 hover:text-indigo-800 hover:underline font-medium">{{ $contactNumber }}</a>
+                                        @else
+                                            <span class="text-gray-400">-</span>
+                                        @endif
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm">
                                         @if(optional($user->umkm)->is_open)
