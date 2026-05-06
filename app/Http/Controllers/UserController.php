@@ -19,9 +19,9 @@ class UserController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        if ($user?->role === 'pengusaha') {
-            return redirect()->route('pengusaha.dashboard');
-        }
+        // if ($user?->role === 'pengusaha') {
+        //     return redirect()->route('pengusaha.dashboard');
+        // }
         // Ambil menus dari UMKM yang sedang buka
         $menus = Menu::query()
             ->whereHas('umkm', function ($query) {
