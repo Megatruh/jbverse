@@ -10,7 +10,7 @@
 
         <div class="mt-4">
             <x-input-label for="contact_number" :value="__('Nomor WhatsApp / Telepon')" />
-            <x-text-input id="contact_number" class="block mt-1 w-full" type="text" name="contact_number" :value="old('contact_number', $umkm->contact_number)" required autofocus />
+            <x-text-input id="contact_number" class="block mt-1 w-full" type="number" name="contact_number" :value="old('contact_number', $umkm->contact_number)" required autofocus />
             <x-input-error :messages="$errors->get('contact_number')" class="mt-2" />
         </div>
 
@@ -45,12 +45,10 @@
                 <div>
                     <x-input-label for="latitude" :value="__('Latitude')" class="text-xs" />
                     <x-text-input id="latitude" class="block mt-1 w-full bg-gray-100 text-sm" type="text" name="latitude" :value="old('latitude', $umkm->latitude)" readonly placeholder="Otomatis terisi" />
-                    <x-input-error :messages="$errors->get('latitude')" class="mt-2" />
                 </div>
                 <div>
                     <x-input-label for="longitude" :value="__('Longitude')" class="text-xs" />
                     <x-text-input id="longitude" class="block mt-1 w-full bg-gray-100 text-sm" type="text" name="longitude" :value="old('longitude', $umkm->longitude)" readonly placeholder="Otomatis terisi" />
-                    <x-input-error :messages="$errors->get('longitude')" class="mt-2" />
                 </div>
             </div>
         </div>

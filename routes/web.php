@@ -150,6 +150,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
         AdminController::class,
         'suspend'
     ])->name('suspend');
+
+    // Route Baru
+    Route::get('/umkm', [AdminController::class, 'indexUmkm'])->name('umkm.index');
+    Route::get('/permintaan', [AdminController::class, 'permintaan'])->name('permintaan.index');
+    
+    // Action Logic (Manfaatkan yang sudah ada di Controller Anda)
+    Route::post('/approve/{id}', [AdminController::class, 'approve'])->name('approve');
+    Route::post('/suspend/{id}', [AdminController::class, 'suspend'])->name('suspend');
+    
     Route::get('/laporan', [AdminController::class, 'kelolaLaporan'])->name('laporan.index');
     Route::patch('/laporan/{report}', [AdminController::class, 'prosesLaporan'])->name('laporan.proses');
 });
