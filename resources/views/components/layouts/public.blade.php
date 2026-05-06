@@ -76,7 +76,6 @@
                         <x-heroicon-o-building-storefront class="w-7 h-7" />
                         <span class="text-xs mt-1">Toko Saya</span>
                     </a>
-
                 @endif
                     <a href="{{ route('profile.edit') }}"
                         class="flex flex-col items-center justify-center text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('profile.edit') ? 'text-indigo-600' : '' }}">
