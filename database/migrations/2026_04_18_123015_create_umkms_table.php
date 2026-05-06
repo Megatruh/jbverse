@@ -22,6 +22,8 @@ return new class extends Migration
             $table->boolean('is_open')->default(false);
             $table->string('logo')->nullable();
             $table->string('image_banner')->nullable();
+            $table->decimal('latitude', 10, 8)->nullable();
+            $table->decimal('longitude', 11, 8)->nullable();
             $table->timestamps();
         });
     }
