@@ -35,11 +35,17 @@
                     <p class="mt-3 text-gray-600 leading-relaxed">{{ $umkm->description }}</p>
 
                     {{-- Info tambahan: Lokasi, Jam Operasional, Google Maps --}}
-                    <div class="mt-5 block gap-x-6 gap-y-3 text-sm">
+                    <div class="mt-5 block gap-x-6 gap-y-3 text-sm ">
                         {{-- Lokasi / Alamat --}}
                         <div class="my-1 flex items-center gap-1 text-gray-600">
-                            <x-heroicon-o-map-pin class="w-4 h-4 text-gray-600" />
-                            <span>{{ $umkm->address ?? 'Alamat tidak tersedia' }}</span>
+                            <a href="https://www.google.com/maps?q={{ $umkm->latitude }},{{ $umkm->longitude }}" target="_blank" class="gap-1 flex items-center text-gray-600 hover:text-indigo-800">
+                                <x-heroicon-o-map-pin class="w-4 h-4 text-gray-600" />
+                            
+                            @if (!$umkm->latitude && !$umkm->longitude)
+                                <span>Alamat tidak tersedia</span>
+                            @endif
+                                <span>JB Lanud</span>
+                            </a>
                         </div>
 
                         {{-- Jam Operasional --}}
