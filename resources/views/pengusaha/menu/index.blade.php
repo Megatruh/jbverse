@@ -1,101 +1,119 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Kelola Menu</h2>
-                <p class="mt-1 text-sm text-gray-500">Daftar semua menu yang Anda tawarkan di katalog.</p>
+<x-layouts.public>
+    <div class="min-h-screen bg-white">
+        <!-- Header -->
+        <div class="sticky top-0 z-20 bg-white border-b border-gray-200">
+            <div class="flex items-center justify-between px-4 py-4">
+                <h1 class="text-lg font-bold text-gray-900">Dashboard Usaha</h1>
+                <button class="p-2 hover:bg-gray-100 rounded-full">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0018 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                    </svg>
+                </button>
             </div>
-            <div>
-                <a href="{{ route('pengusaha.menu.create') }}" class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition">
-                    + Tambah Menu
+
+            <!-- Tabs -->
+            <div class="flex border-b border-gray-200">
+                <a href="{{ route('pengusaha.dashboard') }}"
+                    class="flex-1 px-4 py-3 text-center font-medium text-gray-600 border-b-2 border-transparent hover:text-gray-900">
+                    Dashboard
+                </a>
+                <a href="{{ route('pengusaha.menu.index') }}"
+                    class="flex-1 px-4 py-3 text-center font-medium text-gray-900 border-b-2 border-indigo-600">
+                    Menu
                 </a>
             </div>
         </div>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            
+        <!-- Content -->
+        <div class="px-4 py-4 pb-24">
             @if (session('status'))
-                <div class="mb-6 rounded-md bg-green-50 p-4 border border-green-200">
-                    <p class="text-sm font-medium text-green-800">{{ session('status') }}</p>
+                <div class="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+                    {{ session('status') }}
                 </div>
             @endif
 
-            <div class="bg-white shadow-sm sm:rounded-lg overflow-hidden border border-gray-200">
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-300">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th scope="col" class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900">Nama Menu</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 hidden md:table-cell">Deskripsi</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Harga</th>
-                                <th scope="col" class="relative py-3.5 pl-3 pr-6 text-right text-sm font-semibold text-gray-900">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-200 bg-white">
-                            @forelse ($menus as $item)
-                                <tr class="hover:bg-gray-50 transition">
-                                    <td class="whitespace-nowrap py-4 pl-6 pr-3">
-                                        <div class="flex items-center">
-                                            @if($item->image)
-                                                <img class="h-10 w-10 rounded object-cover mr-3 border border-gray-200" src="{{ asset('storage/' . $item->image) }}" alt="">
-                                            @else
-                                                <div class="h-10 w-10 rounded bg-gray-100 flex items-center justify-center mr-3 border border-gray-200">
-                                                    <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                    </svg>
-                                                </div>
-                                            @endif
-                                            <div>
-                                                <div class="font-medium text-gray-900">{{ $item->name }}</div>
-                                                <div class="text-xs text-gray-500">{{ $item->category }}</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-3 py-4 text-sm text-gray-500 hidden md:table-cell max-w-xs truncate" title="{{ $item->description }}">
-                                        {{ $item->description ?: '-' }}
-                                    </td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
-                                        Rp {{ number_format($item->price, 0, ',', '.') }}
-                                    </td>
-                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-6 text-right text-sm font-medium">
-                                        <div class="flex items-center justify-end gap-3">
-                                            <a href="{{ route('pengusaha.menu.edit', $item) }}" class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded transition">
-                                                Edit
-                                            </a>
-                                            
-                                            <form action="{{ route('pengusaha.menu.destroy', $item) }}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" onclick="return confirm('Yakin ingin menghapus menu ini?')" class="text-red-600 hover:text-red-900 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded transition">
-                                                    Hapus
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" class="py-10 text-center text-sm text-gray-500">
-                                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        Anda belum menambahkan menu apa pun.<br>
-                                        Mulai tambahkan menu agar pelanggan bisa melihat produk Anda!
-                                    </td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-                
-                @if($menus->hasPages())
-                    <div class="px-6 py-4 border-t border-gray-200">
-                        {{ $menus->links() }}
-                    </div>
-                @endif
+            <!-- Total Menu -->
+            <div class="mb-4">
+                <h2 class="text-base font-semibold text-gray-900">Total: {{ count($menus) }} Menu</h2>
             </div>
+
+            <!-- Menu List -->
+            <div class="space-y-3">
+                @forelse ($menus as $item)
+                    <div class="bg-white rounded-lg p-4 border border-gray-200">
+                        <div class="flex items-start gap-3">
+                            <!-- Image -->
+                            <div class="shrink-0">
+                                @if ($item->image)
+                                    <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
+                                        class="h-20 w-20 rounded-lg object-cover border border-gray-200">
+                                @else
+                                    <div
+                                        class="h-20 w-20 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200">
+                                        <svg class="h-8 w-8 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Content -->
+                            <div class="flex-1 min-w-0">
+                                <h3 class="text-base font-semibold text-gray-900">{{ $item->name }}</h3>
+                                <p class="text-sm font-bold text-gray-900 mt-1">Rp
+                                    {{ number_format($item->price, 0, ',', '.') }}</p>
+
+                                <!-- Actions -->
+                                <div class="flex gap-2 mt-3">
+                                    <a href="{{ route('pengusaha.menu.edit', $item) }}"
+                                        class="flex-1 text-center bg-white border border-gray-300 text-gray-900 font-medium py-2 rounded hover:bg-gray-50 transition text-sm">
+                                        Edit
+                                    </a>
+                                    <form action="{{ route('pengusaha.menu.destroy', $item) }}" method="POST"
+                                        class="flex-1">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            onclick="return confirm('Yakin ingin menghapus menu ini?')"
+                                            class="w-full bg-red-50 text-red-600 font-medium py-2 rounded hover:bg-red-100 transition text-sm">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center py-12">
+                        <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        <p class="text-sm text-gray-600">Anda belum menambahkan menu apa pun.</p>
+                        <p class="text-xs text-gray-500 mt-1">Mulai tambahkan menu agar pelanggan bisa melihat produk
+                            Anda!</p>
+                    </div>
+                @endforelse
+            </div>
+
+            <!-- Pagination -->
+            @if ($menus->hasPages())
+                <div class="mt-6">
+                    {{ $menus->links() }}
+                </div>
+            @endif
         </div>
+
+        <!-- FAB Button -->
+        <a href="{{ route('pengusaha.menu.create') }}"
+            class="fixed bottom-18 right-4 w-16 h-16 bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full flex items-center justify-center shadow-lg transition">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+        </a>
     </div>
-</x-app-layout>
+</x-layouts.public>

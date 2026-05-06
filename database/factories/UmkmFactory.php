@@ -22,6 +22,8 @@ class UmkmFactory extends Factory
             'description' => fake()->paragraph(),
             'is_open' => fake()->boolean(80), // 80% kemungkinan buka
             'image_banner' => null, // Biarkan kosong atau isi dengan URL gambar placeholder
+            'latitude' => rand(-7338894, -7323055) / 1000000,// generate lokasi random
+            'longitude' => rand(108240997, 108242302) / 1000000,// generate lokasi random
         ];
     }
 }
