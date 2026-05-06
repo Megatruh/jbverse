@@ -45,3 +45,7 @@
     /* Font */
     --font-inter: "Inter", "sans";
 }
+
+[x-cloak] {
+    display: none !important;
+}

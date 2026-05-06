@@ -22,7 +22,7 @@
                 </a>
             </div>
 
-            <div class="w-xs sm:w-md sm:max-w-lg xl:w-full mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-xs sm:w-md sm:max-w-lg xl:w-full mt-6 px-6 py-4 bg-white shadow-md rounded-2xl overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
         </div>

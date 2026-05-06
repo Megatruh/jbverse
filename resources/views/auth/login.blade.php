@@ -17,8 +17,8 @@
                 </div>
                 <x-text-input id="email" class="block mt-1 pl-10 py-2 w-full" type="email" name="email"
                     :value="old('email')" required autofocus autocomplete="username" placeholder="Masukkan email" />
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
 
             <!-- Password -->
             <x-input-label for="password" :value="__('Password')" class="mt-4" />
@@ -37,8 +37,8 @@
                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                 </button>
-                <x-input-error :messages="$errors->get('password')" class="mt-2" />
             </div>
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
 
             <!-- Remember Me -->
             <div class="block mt-4">
@@ -53,7 +53,8 @@
             </x-primary-button>
             <div class="mb-6 text-center">
                 <span>Belum punya akun?</span>
-                <a href="{{ route('register') }}" class="text-indigo-500 hover:text-indigo-700 focus:text-indigo-900 underline">
+                <a href="{{ route('register') }}"
+                    class="text-indigo-500 hover:text-indigo-700 focus:text-indigo-900 underline">
                     Daftar di sini
                 </a>
             </div>

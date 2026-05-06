@@ -60,7 +60,7 @@
     </main>
 
     {{-- Bottom Navigation Bar untuk Mobile --}}
-    <div class="block md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 z-50 shadow-lg">
+    <div class="block md:hidden fixed bottom-0 inset-x-0 bg-white border-t border-gray-200 z-16 shadow-lg">
         <div class="flex justify-around items-center h-16 px-2">
             <a href="{{ route('public.beranda') }}"
                 class="flex flex-col items-center justify-center text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('public.beranda') ? 'text-indigo-600' : '' }}">
