@@ -44,11 +44,11 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <x-input-label for="latitude" :value="__('Latitude')" class="text-xs" />
-                    <x-text-input id="latitude" class="block mt-1 w-full bg-gray-100 text-sm" type="text" name="latitude" :value="old('latitude', $umkm->latitude)" readonly placeholder="Otomatis terisi" />
+                    <x-text-input id="latitude" class="block mt-1 w-full bg-gray-100 text-sm" type="text" name="latitude" :value="old('latitude', $umkm->latitude)" placeholder="Otomatis terisi" />
                 </div>
                 <div>
                     <x-input-label for="longitude" :value="__('Longitude')" class="text-xs" />
-                    <x-text-input id="longitude" class="block mt-1 w-full bg-gray-100 text-sm" type="text" name="longitude" :value="old('longitude', $umkm->longitude)" readonly placeholder="Otomatis terisi" />
+                    <x-text-input id="longitude" class="block mt-1 w-full bg-gray-100 text-sm" type="text" name="longitude" :value="old('longitude', $umkm->longitude)" placeholder="Otomatis terisi" />
                 </div>
             </div>
         </div>
