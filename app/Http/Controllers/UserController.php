@@ -129,11 +129,12 @@ class UserController extends Controller
         if (strlen($query) >= 2) {
             // Cari Menu
             $menus = Menu::query()
-                ->with('umkm')
+                ->with('umkm:id,name,slug,description,price')
                 ->where('name', 'like', '%' . $query . '%')
                 ->whereHas('umkm', function ($q) {
                     $q->where('is_open', true);
                 })
+                ->select('id', 'umkm_id', 'name', 'slug', 'price')
                 ->limit(10)
                 ->get();
 
@@ -141,14 +142,30 @@ class UserController extends Controller
             $umkms = Umkm::query()
                 ->where('name', 'like', '%' . $query . '%')
                 ->where('is_open', true)
+                ->select('id', 'name', 'slug', 'description')
                 ->limit(10)
                 ->get();
         }
 
         if ($request->wantsJson()) {
             return response()->json([
-                'menus' => $menus,
-                'umkms' => $umkms,
+                'menus' => $menus->map(fn($menu) => [
+                    'id' => $menu->id,
+                    'name' => $menu->name,
+                    'slug' => $menu->slug,
+                    'price' => $menu->price,
+                    'umkm' => [
+                        'id' => $menu->umkm->id,
+                        'name' => $menu->umkm->name,
+                        'slug' => $menu->umkm->slug,
+                    ]
+                ]),
+                'umkms' => $umkms->map(fn($umkm) => [
+                    'id' => $umkm->id,
+                    'name' => $umkm->name,
+                    'slug' => $umkm->slug,
+                    'description' => $umkm->description,
+                ]),
             ]);
         }
 
