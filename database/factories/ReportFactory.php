@@ -29,7 +29,7 @@ class ReportFactory extends Factory
                 'Harga tidak sesuai',
                 'Pengemasan rusak',
             ]) . '. ' . fake()->sentence(),
-            'status' => fake()->randomElement(['pending', 'diproses', 'selesai', 'ditolak']),
+            'status' => fake()->randomElement(['diproses', 'selesai', 'ditolak']),
         ];
     }
 }
