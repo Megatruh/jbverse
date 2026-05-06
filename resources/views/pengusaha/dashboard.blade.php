@@ -63,15 +63,15 @@
                     </div>
                 </div>
 
-                <div class="grid gap-3">
+                <div class="grid grid-cols-2 gap-3">
                     <div class="bg-gray-50 rounded p-3">
                         <p class="text-2xl font-bold text-gray-900">{{ (int) ($menusCount ?? 0) }}</p>
                         <p class="text-xs text-gray-600 mt-1">Total Menu</p>
                     </div>
-                    {{-- <div class="bg-yellow-50 rounded p-3">
+                    <div class="bg-yellow-50 rounded p-3">
                         <p class="text-2xl font-bold text-yellow-600">{{ (int) ($verification_count ?? 0) }}</p>
                         <p class="text-xs text-yellow-700 mt-1">Menunggu Verifikasi</p>
-                    </div> --}}
+                    </div>
                 </div>
             </div>
 
@@ -106,24 +106,15 @@
             <!-- Lokasi -->
             <div class="bg-white rounded-lg p-4 border border-gray-200">
                 <h2 class="text-base font-bold text-gray-900 mb-3">Lokasi</h2>
-                <div class="bg-gray-100 rounded-lg h-40 flex items-center justify-center">
-                    <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </div>
-                <button class="mt-2 w-full text-center text-sm font-medium text-gray-600 hover:text-gray-900">
-                    Pilih Titik Lokasi Baru
-                </button>
-            </div>
-
-            <!-- Alamat Lengkap -->
-            <div class="bg-white rounded-lg p-4 border border-gray-200">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Alamat Lengkap</label>
-                <div class="bg-gray-50 rounded px-3 py-2">
-                    <p class="text-sm text-gray-900">{{ $umkm->address ?? 'Belum diatur' }}</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Latitude</label>
+                        <input type="text" id="latitude" name="latitude" value="{{ old('latitude', $umkm->latitude) }}" placeholder="Otomatis terisi" class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-600 focus:outline-none" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Longitude</label>
+                        <input type="text" id="longitude" name="longitude" value="{{ old('longitude', $umkm->longitude) }}" placeholder="Otomatis terisi" class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-600 focus:outline-none" />
+                    </div>
                 </div>
             </div>
 
