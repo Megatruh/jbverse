@@ -4,6 +4,22 @@
         {{ __('Terima kasih telah mendaftar! Sebelum akun Anda ditinjau oleh Admin, mohon lengkapi data kontak, lokasi toko, dan unggah foto toko (banner) Anda terlebih dahulu.') }}
     </div>
 
+    @if ($errors->any())
+        <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg shadow-sm">
+            <div class="flex items-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p class="font-bold text-sm">{{ __('Terdapat kesalahan pada pengisian form:') }}</p>
+            </div>
+            <ul class="list-disc list-inside text-xs space-y-1 ml-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('pengusaha.simpan_profil') }}" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
@@ -16,7 +32,7 @@
 
         <div class="mt-4">
             <x-input-label for="contact_number" :value="__('Nomor WhatsApp / Telepon')" />
-            <x-text-input id="contact_number" class="block mt-1 w-full" type="number" name="contact_number" :value="old('contact_number', $umkm->contact_number)" required autofocus />
+            <x-text-input id="contact_number" class="block mt-1 w-full" type="number" name="contact_number" required autofocus />
             <x-input-error :messages="$errors->get('contact_number')" class="mt-2" />
         </div>
 
@@ -28,7 +44,7 @@
                 rows="4"
                 class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 required
-            >{{ old('description', $umkm->description) }}</textarea>
+            ></textarea>
             <x-input-error :messages="$errors->get('description')" class="mt-2" />
         </div>
 
@@ -50,11 +66,11 @@
             <div class="grid grid-cols-2 gap-4">
                 <div>
                     <x-input-label for="latitude" :value="__('Latitude')" class="text-xs" />
-                    <x-text-input id="latitude" class="block mt-1 w-full bg-gray-100 text-sm" type="text" name="latitude" :value="old('latitude', $umkm->latitude)" placeholder="Otomatis terisi" />
+                    <x-text-input id="latitude" class="block mt-1 w-full text-sm" type="text" name="latitude" placeholder="Isi manual / Otomatis" />
                 </div>
                 <div>
                     <x-input-label for="longitude" :value="__('Longitude')" class="text-xs" />
-                    <x-text-input id="longitude" class="block mt-1 w-full bg-gray-100 text-sm" type="text" name="longitude" :value="old('longitude', $umkm->longitude)" placeholder="Otomatis terisi" />
+                    <x-text-input id="longitude" class="block mt-1 w-full text-sm" type="text" name="longitude" placeholder="Isi manual / Otomatis" />
                 </div>
             </div>
         </div>

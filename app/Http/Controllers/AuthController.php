@@ -21,13 +21,15 @@ class AuthController extends Controller
     // Memproses data pendaftaran
     public function registerPengusaha(Request $request)
     {
-        // 1. Validasi Inputan (Foto dan Kontak dihilangkan dari kewajiban awal)
+        // 1. Validasi Inputan
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', Password::defaults()],
             'umkm_name' => ['required', 'string', 'max:255'],
+            'contact_number' => ['required', 'string', 'max:20'],
             'description' => ['required', 'string'],
+            'image_banner' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
         ]);
 
         // 2. Simpan Kredensial ke tabel `users`
@@ -39,12 +41,18 @@ class AuthController extends Controller
             'status' => 'pending', 
         ]);
 
+        $pathBanner = null;
+        if ($request->hasFile('image_banner')) {
+            $pathBanner = $request->file('image_banner')->store('umkm_banners', 'public');
+        }
+
         // 3. Simpan Profil Toko (Data awal) ke tabel `umkms`
         Umkm::create([
             'user_id' => $user->id, 
             'name' => $request->umkm_name,
-            'contact_number' => '', // Dikosongkan dulu, diisi setelah login
+            'contact_number' => $request->contact_number,
             'description' => $request->description,
+            'image_banner' => $pathBanner,
             'is_open' => false, 
         ]);
 

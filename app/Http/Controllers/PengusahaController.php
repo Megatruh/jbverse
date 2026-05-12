@@ -92,8 +92,8 @@ class PengusahaController extends Controller
             'contact_number' => ['required', 'string', 'max:20'],
             'description' => ['required', 'string', 'max:2000'],
             'image_banner' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'], // Maks 2MB
-            'longitude' => ['required', 'numeric', 'between:-180,180'],
-            'latitude' => ['required', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
         ]);
 
         $user = Auth::user();

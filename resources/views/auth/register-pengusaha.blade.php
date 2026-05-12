@@ -4,6 +4,22 @@
         {{ __('Daftar sebagai Mitra JBVerse. Akun Anda akan ditinjau oleh Admin sebelum diaktifkan.') }}
     </div>
 
+    @if ($errors->any())
+        <div class="mb-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-lg shadow-sm">
+            <div class="flex items-center mb-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+                <p class="font-bold text-sm">{{ __('Terdapat kesalahan pada pengisian form:') }}</p>
+            </div>
+            <ul class="list-disc list-inside text-xs space-y-1 ml-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('register.pengusaha.store') }}" enctype="multipart/form-data">
         @csrf
 
@@ -11,13 +27,13 @@
         
         <div>
             <x-input-label for="name" :value="__('Nama Lengkap Pemilik')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" required autofocus />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email (Untuk Login)')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" required />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -31,19 +47,19 @@
 
         <div class="mt-4">
             <x-input-label for="umkm_name" :value="__('Nama Gerai (Misal: Kopi Kenangan)')" />
-            <x-text-input id="umkm_name" class="block mt-1 w-full" type="text" name="umkm_name" :value="old('umkm_name')" required />
+            <x-text-input id="umkm_name" class="block mt-1 w-full" type="text" name="umkm_name" required />
             <x-input-error :messages="$errors->get('umkm_name')" class="mt-2" />
         </div>
 
         <div class="mt-4">
             <x-input-label for="contact_number" :value="__('Nomor Telepon/WhatsApp')" />
-            <x-text-input id="contact_number" class="block mt-1 w-full" type="text" name="contact_number" :value="old('contact_number')" required />
+            <x-text-input id="contact_number" class="block mt-1 w-full" type="text" name="contact_number" required />
             <x-input-error :messages="$errors->get('contact_number')" class="mt-2" />
         </div>
 
         <div class="mt-4">
             <x-input-label for="description" :value="__('Deskripsi Singkat Usaha')" />
-            <textarea id="description" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="description" required>{{ old('description') }}</textarea>
+            <textarea id="description" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" name="description" required></textarea>
             <x-input-error :messages="$errors->get('description')" class="mt-2" />
         </div>
 
