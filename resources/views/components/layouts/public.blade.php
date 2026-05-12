@@ -13,10 +13,16 @@
     <nav class="bg-header sticky top-0 z-50 shadow-xl">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-16">
+
+                {{-- Logo area: replaced by page title on pengusaha pages --}}
                 <div class="flex items-center">
-                    <a href="{{ route('public.beranda') }}" class="text-2xl font-bold text-indigo-600">
-                        <img src="{{ asset('images/logo.png') }}" alt="JBVerse" class="h-16 w-16 xl:h-25 xl:w-25">
-                    </a>
+                    @isset($navbarLogo)
+                        {{ $navbarLogo }}
+                    @else
+                        <a href="{{ route('public.beranda') }}" class="text-2xl font-bold text-indigo-600">
+                            <img src="{{ asset('images/logo.png') }}" alt="JBVerse" class="h-16 w-16 xl:h-25 xl:w-25">
+                        </a>
+                    @endisset
                 </div>
 
                 <div class="hidden lg:flex items-center space-x-4">
@@ -71,7 +77,7 @@
 
             @auth
                 @if (auth()->user()->role === 'pengusaha')
-                    <a href="/pengusaha/dashboard" 
+                    <a href="/pengusaha/dashboard"
                     class="flex flex-col items-center justify-center text-gray-600 hover:text-indigo-600 transition {{ request()->routeIs('pengusaha.dashboard') ? 'text-indigo-600' : '' }}">
                         <x-heroicon-o-building-storefront class="w-7 h-7" />
                         <span class="text-xs mt-1">Toko Saya</span>

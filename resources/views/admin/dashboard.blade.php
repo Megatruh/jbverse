@@ -140,14 +140,14 @@
                 <table class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900">
+                            <th scope="col" class="py-3.5 pl-6 pr-3 text-center text-sm font-semibold text-gray-900">
                                 Nama Toko & Pemilik</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Kontak
+                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Kontak
                             </th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status
+                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Status
                                 Operasional</th>
                             <th scope="col"
-                                class="relative py-3.5 pl-3 pr-6 sm:pr-6 text-right text-sm font-semibold text-gray-900">
+                                class="relative py-3.5 pl-3 pr-6 sm:pr-6 text-center text-sm font-semibold text-gray-900">
                                 Aksi
                             </th>
                         </tr>
@@ -176,7 +176,7 @@
                                         <span class="text-gray-400">-</span>
                                     @endif
                                 </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
                                     @if (optional($user->umkm)->is_open)
                                         <span
                                             class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Sedang
@@ -233,11 +233,11 @@
                 <table class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900">
+                            <th scope="col" class="py-3.5 pl-6 pr-3 text-center text-sm font-semibold text-gray-900">
                                 Nama Toko & Pemilik</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Kontak</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Status Operasional</th>
                         </tr>
                     </thead>
@@ -252,7 +252,7 @@
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                     {{ optional($user->umkm)->contact_number ?? '-' }}
                                 </td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm">
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-center">
                                     @if (optional($user->umkm)->is_open)
                                         <span
                                             class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Sedang
@@ -305,16 +305,16 @@
                 <table class="min-w-full divide-y divide-gray-300">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="py-3.5 pl-6 pr-3 text-left text-sm font-semibold text-gray-900">
+                            <th scope="col" class="py-3.5 pl-6 pr-3 text-center text-sm font-semibold text-gray-900">
                                 Pelapor</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Toko
+                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Toko
                                 Terlapor</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Alasan</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
                                 Status</th>
                             <th scope="col"
-                                class="relative py-3.5 pl-3 pr-6 sm:pr-6 text-right text-sm font-semibold text-gray-900">
+                                class="relative py-3.5 pl-3 pr-6 sm:pr-6 text-center text-sm font-semibold text-gray-900">
                                 Aksi
                             </th>
                         </tr>

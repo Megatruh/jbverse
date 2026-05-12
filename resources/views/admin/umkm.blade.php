@@ -44,9 +44,9 @@
                             <td class="px-6 py-4 text-sm text-gray-600">{{ $user->name }}</td>
                             <td class="px-6 py-4">
                                 @if ($user->status === 'approved')
-                                    <span class="px-2 py-1 text-xs font-bold bg-green-100 text-green-700 rounded-full">Aktif</span>
+                                    <span class="text-xs font-bold text-green-600">Aktif</span>
                                 @else
-                                    <span class="px-2 py-1 text-xs font-bold bg-red-100 text-red-700 rounded-full">Suspended</span>
+                                    <span class="text-xs font-bold text-red-600">Suspended</span>
                                 @endif
                             </td>
                             <td class="px-6 py-4 text-center">
@@ -54,12 +54,12 @@
                                 @if($user->status === 'approved')
                                     <form action="{{ route('admin.suspend', $user->id) }}" method="POST" onsubmit="return confirm('Bekukan usaha ini?')">
                                         @csrf
-                                        <button type="submit" class="text-sm font-bold text-red-600 hover:text-red-800 transition">
+                                        <button type="submit" class="px-3 py-1.5 border border-red-200 bg-red-50 text-xs font-bold text-red-600 hover:bg-red-100 rounded-md transition">
                                             Suspend
                                         </button>
                                     </form>
                                 @else
-                                    <button class="text-xs font-bold text-gray-400 cursor-not-allowed" disabled>Telah Dibekukan</button>
+                                    <button class="px-3 py-1.5 border border-gray-200 bg-gray-50 text-xs font-bold text-gray-400 rounded-md cursor-not-allowed" disabled>Telah Dibekukan</button>
                                 @endif
                             </td>
                         </tr>

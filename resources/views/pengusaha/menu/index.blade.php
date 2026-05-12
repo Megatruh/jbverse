@@ -1,16 +1,23 @@
 <x-layouts.public>
+    <x-slot name="navbarLogo">
+        <div class="flex items-center h-full">
+        <div>
+                {{-- <p class="text-[10px] text-indigo-300 font-medium uppercase tracking-widest leading-none">Pengusaha</p> --}}
+                <p class="text-base font-bold text-white leading-tight">Daftar Menu</p>
+            </div>
+        </div>
+    </x-slot>
     <div class="min-h-screen bg-white">
-        <!-- Header -->
         <div class="sticky top-0 z-20 bg-white border-b border-gray-200">
-            <div class="flex items-center justify-between px-4 py-4">
+            {{-- <div class="flex items-center justify-between px-4 py-4">
                 <h1 class="text-lg font-bold text-gray-900">Dashboard Usaha</h1>
                 <button class="p-2 hover:bg-gray-100 rounded-full">
-                    {{-- <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 17h5l-1.405-1.405A2.032 2.032 0 0018 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg> --}}
+                    </svg>
                 </button>
-            </div>
+            </div> --}}
 
             <!-- Tabs -->
             <div class="flex border-b border-gray-200">
@@ -112,7 +119,7 @@
 
         <!-- FAB Button -->
         <a href="{{ route('pengusaha.menu.create') }}"
-            class="fixed bottom-1 right-4 w-16 h-16 bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full flex items-center justify-center shadow-lg transition">
+            class="fixed bottom-20 right-4 w-16 h-16 bg-yellow-400 hover:bg-yellow-500 text-gray-900 rounded-full flex items-center justify-center shadow-lg transition">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
