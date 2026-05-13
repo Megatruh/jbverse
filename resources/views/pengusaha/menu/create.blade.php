@@ -10,7 +10,7 @@
             </svg>
         </a>
         <div>
-                <p class="text-[10px] text-indigo-300 font-medium uppercase tracking-widest leading-none">Pengusaha</p>
+                {{-- <p class="text-[10px] text-indigo-300 font-medium uppercase tracking-widest leading-none">Pengusaha</p> --}}
                 <p class="text-base font-bold text-white leading-tight">Tambah Menu</p>
             </div>
         </div>
