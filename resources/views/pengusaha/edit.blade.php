@@ -1,7 +1,7 @@
 <x-layouts.public>
     <x-slot name="navbarLogo">
         <div class="flex items-center h-full">
-        <a href="{{ route('pengusaha.menu.index') }}"
+        <a href="{{ route('pengusaha.dashboard') }}"
             class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/20 transition mr-2"
             title="Kembali">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
@@ -10,26 +10,89 @@
             </svg>
         </a>
         <div>
-                {{-- <p class="text-[10px] text-indigo-300 font-medium uppercase tracking-widest leading-none">Pengusaha</p> --}}
-                <p class="text-base font-bold text-white leading-tight">Edit Menu</p>
+                <p class="text-[10px] text-indigo-300 font-medium uppercase tracking-widest leading-none">Pengusaha</p>
+                <p class="text-base font-bold text-white leading-tight">Edit Profil Usaha</p>
             </div>
         </div>
     </x-slot>
     <div class="min-h-screen bg-white">
 
         <!-- Content -->
-        <form action="{{ route('pengusaha.menu.update', $menu) }}" method="POST" enctype="multipart/form-data"
-            class="px-4 py-6 pb-32 space-y-6">
+        <form method="POST" action="{{ route('pengusaha.update') }}" enctype="multipart/form-data"
+            class="px-4 py-6 pb-24 space-y-4">
             @csrf
-            @method('PUT')
+            @method('PATCH')
 
-            <!-- Foto Menu -->
+            <!-- Nama Toko -->
             <div class="bg-white rounded-lg border border-gray-200 p-4">
-                <label class="block text-base font-semibold text-gray-900 mb-3">Foto Menu</label>
+                <label class="block text-sm font-semibold text-gray-900 mb-2">
+                    Nama Toko
+                    <span class="text-red-600">*</span>
+                </label>
+                <input type="text" id="name" name="name" placeholder="Masukan nama toko"
+                    value="{{ old('name', $umkm->name) }}"
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
+                    required />
+            </div>
+
+            <!-- Deskripsi Toko -->
+            <div class="bg-white rounded-lg border border-gray-200 p-4">
+                <label class="block text-sm font-semibold text-gray-900 mb-2">
+                    Deskripsi Toko
+                    <span class="text-red-600">*</span>
+                </label>
+                <textarea id="description" name="description" placeholder="Masukan deskripsi toko" rows="4"
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
+                    required>{{ old('description', $umkm->description) }}</textarea>
+            </div>
+
+            <!-- Nomor WhatsApp -->
+            <div class="bg-white rounded-lg border border-gray-200 p-4">
+                <label class="block text-sm font-semibold text-gray-900 mb-2">
+                    Nomor WhatsApp
+                    <span class="text-red-600">*</span>
+                </label>
+                <input type="text" id="contact_number" name="contact_number" placeholder="Masukan nomor WhatsApp"
+                    value="{{ old('contact_number', $umkm->contact_number) }}"
+                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
+                    required />
+            </div>
+
+            <!-- Update lokasi Toko -->
+            <div class="bg-white rounded-lg border border-gray-200 p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <label class="block text-sm font-semibold text-gray-900">
+                        Titik Lokasi Toko (Koordinat)
+                    </label>
+                    <button type="button" onclick="getLocation()" class="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 rounded-md text-xs font-bold transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Ambil Lokasi Saat Ini
+                    </button>
+                </div>
+                <p id="status-lokasi" class="text-xs text-gray-500 mb-3 italic">Pastikan Anda sedang berada di lokasi toko saat menekan tombol di atas.</p>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Latitude</label>
+                        <input type="text" id="latitude" name="latitude" value="{{ old('latitude', $umkm->latitude) }}" placeholder="Otomatis terisi" class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-600 focus:outline-none" />
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Longitude</label>
+                        <input type="text" id="longitude" name="longitude" value="{{ old('longitude', $umkm->longitude) }}" placeholder="Otomatis terisi" class="w-full px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm text-gray-600 focus:outline-none" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Update Banner Toko -->
+            <div class="bg-white rounded-lg border border-gray-200 p-4">
+                <label class="block text-sm font-semibold text-gray-900 mb-3">Update Banner Toko</label>
 
                 <!-- Upload Area (shown when no image) -->
-                <label for="image" id="upload-area-image"
-                    class="@if($menu->image) hidden @endif flex flex-col items-center justify-center w-full h-40 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                <label for="image_banner" id="upload-area-banner"
+                    class="flex flex-col items-center justify-center w-full h-40 bg-gray-100 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition">
                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
                         <svg class="w-10 h-10 text-gray-400 mb-2" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24">
@@ -39,102 +102,35 @@
                         <p class="text-sm text-gray-600 font-medium">Tap untuk upload foto</p>
                         <p class="text-xs text-gray-400 mt-1">Format JPG, PNG, (Maks 2MB)</p>
                     </div>
-                    <input id="image" name="image" type="file" class="hidden" accept="image/*"
-                        onchange="previewImage(this, 'preview-image', 'upload-area-image')" />
+                    <input id="image_banner" name="image_banner" type="file" class="hidden" accept="image/*"
+                        onchange="previewImage(this, 'preview-banner', 'upload-area-banner')" />
                 </label>
 
-                <!-- Image Preview -->
-                <div id="preview-image" class="@if(!$menu->image) hidden @endif relative w-full">
-                    <img id="preview-image-img"
-                        src="@if($menu->image) {{ asset('storage/' . $menu->image) }} @endif"
-                        alt="Preview Foto Menu"
+                <!-- Image Preview (hidden initially) -->
+                <div id="preview-banner" class="hidden relative w-full">
+                    <img id="preview-banner-img" src="" alt="Preview Banner"
                         class="w-full h-48 object-cover rounded-lg border border-gray-200" />
                     <button type="button"
-                        onclick="removeImage('image', 'preview-image', 'upload-area-image')"
+                        onclick="removeImage('image_banner', 'preview-banner', 'upload-area-banner')"
                         class="absolute top-2 left-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md transition"
                         title="Hapus gambar">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
-                    <!-- Hidden input to signal image removal to server -->
-                    <input type="hidden" id="remove-image-flag" name="remove_image" value="0" />
                 </div>
             </div>
 
-            <!-- Nama Menu -->
-            <div class="bg-white rounded-lg border border-gray-200 p-4">
-                <label class="block text-sm font-semibold text-gray-900 mb-2">
-                    Nama Menu
-                    <span class="text-red-600">*</span>
-                </label>
-                <input type="text" id="name" name="name" placeholder="Masukan nama menu"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
-                    value="{{ old('name', $menu->name) }}" required />
-            </div>
-
-            <!-- Harga Menu -->
-            <div class="bg-white rounded-lg border border-gray-200 p-4">
-                <label class="block text-sm font-semibold text-gray-900 mb-2">
-                    Harga Menu
-                    <span class="text-red-600">*</span>
-                </label>
-                <input type="number" id="price" name="price" placeholder="0"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
-                    min="0" value="{{ old('price', $menu->price) }}" required />
-            </div>
-
-            <!-- Kategori -->
-            <div class="bg-white rounded-lg border border-gray-200 p-4">
-                <label class="block text-sm font-semibold text-gray-900 mb-2">Kategori</label>
-                <select id="category" name="category"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white appearance-none"
-                    required>
-                    <option value="">Pilih kategori</option>
-                    <option value="Makanan" {{ old('category', $menu->category) == 'Makanan' ? 'selected' : '' }}>
-                        Makanan</option>
-                    <option value="Minuman" {{ old('category', $menu->category) == 'Minuman' ? 'selected' : '' }}>
-                        Minuman</option>
-                    <option value="Jajanan" {{ old('category', $menu->category) == 'Jajanan' ? 'selected' : '' }}>
-                        Jajanan</option>
-                    <option value="Dessert" {{ old('category', $menu->category) == 'Dessert' ? 'selected' : '' }}>
-                        Dessert</option>
-                </select>
-            </div>
-
-            <!-- Deskripsi Menu -->
-            <div class="bg-white rounded-lg border border-gray-200 p-4">
-                <label class="block text-sm font-semibold text-gray-900 mb-2">Deskripsi Menu</label>
-                <textarea id="description" name="description" placeholder="Jelaskan detail menu kamu..." rows="4"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white resize-none">{{ old('description', $menu->description) }}</textarea>
-            </div>
-
-            <!-- Tambahkan Varian -->
-            <div class="bg-white rounded-lg border border-gray-200 p-4">
-                <h3 class="text-sm font-semibold text-gray-900 mb-1">Tambahkan Varian (Opsional)</h3>
-                <p class="text-xs text-gray-500 mb-4">Tambahkan pilihan seperti level pedas, ukuran, atau topping.</p>
-                <input type="text" name="ukuran" placeholder="Contoh: Ukuran"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white mb-3"
-                    value="{{ old('ukuran', $menu->ukuran) }}" />
-                <input type="text" name="variant" placeholder="Contoh: Rasa"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
-                    value="{{ old('variant', $menu->variant) }}" />
-                <button type="button"
-                    class="mt-3 w-full bg-gray-800 text-white font-medium py-3 rounded-lg hover:bg-gray-900 transition">
-                    Tambah
-                </button>
-            </div>
-
-            <!-- Buttons -->
-            <div class="bg-white rounded-lg border border-gray-200 p-4 space-y-3">
-                <button type="submit"
-                    class="w-full bg-gray-900 text-white font-semibold py-3 rounded-lg hover:bg-black transition">
-                    Simpan Perubahan
-                </button>
-                <a href="{{ route('pengusaha.menu.index') }}"
-                    class="block text-center text-gray-700 font-medium py-3 rounded-lg border border-gray-300 hover:bg-gray-50 transition">
+            <!-- Buttons Bottom -->
+            <div class="grid grid-cols-2 gap-3 mt-6 mb-6">
+                <a href="{{ route('pengusaha.dashboard') }}"
+                    class="text-center bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 rounded-lg transition">
                     Batal
                 </a>
+                <button type="submit"
+                    class="bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 rounded-lg transition">
+                    Simpan Perubahan
+                </button>
             </div>
         </form>
     </div>
@@ -153,10 +149,6 @@
             previewImg.src = e.target.result;
             previewDiv.classList.remove('hidden');
             uploadArea.classList.add('hidden');
-
-            // Reset remove flag if it was set
-            const removeFlag = document.getElementById('remove-image-flag');
-            if (removeFlag) removeFlag.value = '0';
         };
         reader.readAsDataURL(file);
     }
@@ -171,10 +163,6 @@
         previewImg.src = '';
         previewDiv.classList.add('hidden');
         uploadArea.classList.remove('hidden');
-
-        // Signal server to remove current image
-        const removeFlag = document.getElementById('remove-image-flag');
-        if (removeFlag) removeFlag.value = '1';
     }
 </script>
 </x-layouts.public>

@@ -85,17 +85,47 @@
             {{-- Ukuran --}}
             <div class="mb-4">
                 <span class="text-sm font-bold text-gray-900 block mb-1">Ukuran:</span>
-                <div class="inline-block bg-gray-200 rounded-xl px-3 py-1 shadow-sm">
-                    <span class="text-sm text-gray-900">{{ $menu->ukuran ?: '-' }}</span>
-                </div>
+                @php
+                    $ukuranList = is_array($menu->ukuran) ? $menu->ukuran : (is_string($menu->ukuran) ? json_decode($menu->ukuran, true) : []);
+                    if (!is_array($ukuranList)) $ukuranList = [$menu->ukuran];
+                    $ukuranList = array_filter($ukuranList);
+                @endphp
+                @if(!empty($ukuranList))
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($ukuranList as $uk)
+                            <div class="inline-block bg-gray-200 rounded-xl px-3 py-1 shadow-sm">
+                                <span class="text-sm text-gray-900">{{ is_array($uk) ? json_encode($uk) : $uk }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="inline-block bg-gray-200 rounded-xl px-3 py-1 shadow-sm">
+                        <span class="text-sm text-gray-900">-</span>
+                    </div>
+                @endif
             </div>
 
             {{-- Varian --}}
             <div>
                 <span class="text-sm font-bold text-gray-900 block mb-1">Varian:</span>
-                <div class="inline-block bg-gray-200 rounded-xl px-3 py-1 shadow-sm">
-                    <span class="text-sm text-gray-900">{{ $menu->variant ?: '-' }}</span>
-                </div>
+                @php
+                    $variantList = is_array($menu->variant) ? $menu->variant : (is_string($menu->variant) ? json_decode($menu->variant, true) : []);
+                    if (!is_array($variantList)) $variantList = [$menu->variant];
+                    $variantList = array_filter($variantList);
+                @endphp
+                @if(!empty($variantList))
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($variantList as $vr)
+                            <div class="inline-block bg-gray-200 rounded-xl px-3 py-1 shadow-sm">
+                                <span class="text-sm text-gray-900">{{ is_array($vr) ? json_encode($vr) : $vr }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="inline-block bg-gray-200 rounded-xl px-3 py-1 shadow-sm">
+                        <span class="text-sm text-gray-900">-</span>
+                    </div>
+                @endif
             </div>
         </div>
 

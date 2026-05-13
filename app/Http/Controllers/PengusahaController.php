@@ -240,8 +240,10 @@ class PengusahaController extends Controller
             'category' => 'required|string|max:100',
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'ukuran' => 'required|string|max:100',
-            'variant' => 'required|string|max:100',
+            'ukuran' => 'nullable|array',
+            'ukuran.*' => 'nullable|string|max:100',
+            'variant' => 'nullable|array',
+            'variant.*' => 'nullable|string|max:100',
             'price' => 'required|numeric|min:0',
         ]);
 
@@ -252,6 +254,9 @@ class PengusahaController extends Controller
             $imagePath = $request->file('image')->store('menu_images', 'public');
         }
 
+        $ukuran = $request->ukuran ? array_values(array_filter($request->ukuran)) : null;
+        $variant = $request->variant ? array_values(array_filter($request->variant)) : null;
+
         // Simpan langsung ke tabel menus secara simpel
         Menu::create([
             'umkm_id' => $umkm->id,
@@ -260,8 +265,8 @@ class PengusahaController extends Controller
             // Kolom description di DB tidak nullable, jadi pastikan string.
             'description' => $request->description ?? '',
             'image' => $imagePath,
-            'ukuran' => $request->ukuran,
-            'variant' => $request->variant,
+            'ukuran' => empty($ukuran) ? null : $ukuran,
+            'variant' => empty($variant) ? null : $variant,
             'price' => $request->price, 
         ]);
 
@@ -322,18 +327,23 @@ class PengusahaController extends Controller
             'category' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'ukuran'=>'required|string|max:100',
-            'variant'=>'required|string|max:100',
-            'price'=>'required|numeric|min:0',
+            'ukuran' => 'nullable|array',
+            'ukuran.*' => 'nullable|string|max:100',
+            'variant' => 'nullable|array',
+            'variant.*' => 'nullable|string|max:100',
+            'price' => 'required|numeric|min:0',
         ]);        
+
+        $ukuran = $request->ukuran ? array_values(array_filter($request->ukuran)) : null;
+        $variant = $request->variant ? array_values(array_filter($request->variant)) : null;
 
         $dataToUpdate = [
             'name' => $request->name,
             'category' => $request->category,
             'slug' => Str::slug($request->name),
             'description' => $request->description ?? '',
-            'ukuran' => $request->ukuran,
-            'variant' => $request->variant,
+            'ukuran' => empty($ukuran) ? null : $ukuran,
+            'variant' => empty($variant) ? null : $variant,
             'price' => $request->price,
         ];
 

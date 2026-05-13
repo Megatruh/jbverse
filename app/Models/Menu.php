@@ -17,6 +17,11 @@ class Menu extends Model
         'image', 'ukuran', 'variant', 'price'
     ];
 
+    protected $casts = [
+        'ukuran' => 'json',
+        'variant' => 'json',
+    ];
+
     // Relasi (Tetap sama)
     public function umkm()
     {

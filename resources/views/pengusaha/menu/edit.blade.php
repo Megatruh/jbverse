@@ -97,20 +97,62 @@
                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white resize-none">{{ old('description', $menu->description) }}</textarea>
             </div>
 
-            <!-- Tambahkan Varian -->
+            @php
+                $ukuranList = old('ukuran', $menu->ukuran);
+                if (is_string($ukuranList)) {
+                    $decoded = json_decode($ukuranList, true);
+                    $ukuranList = json_last_error() === JSON_ERROR_NONE ? $decoded : [$ukuranList];
+                }
+                $ukuranList = is_array($ukuranList) ? array_filter($ukuranList) : [];
+                if (empty($ukuranList)) $ukuranList = [''];
+
+                $variantList = old('variant', $menu->variant);
+                if (is_string($variantList)) {
+                    $decoded = json_decode($variantList, true);
+                    $variantList = json_last_error() === JSON_ERROR_NONE ? $decoded : [$variantList];
+                }
+                $variantList = is_array($variantList) ? array_filter($variantList) : [];
+                if (empty($variantList)) $variantList = [''];
+            @endphp
+
+            <!-- Tambahkan Varian & Rasa -->
             <div class="bg-white rounded-lg border border-gray-200 p-4">
-                <h3 class="text-sm font-semibold text-gray-900 mb-1">Tambahkan Varian (Opsional)</h3>
-                <p class="text-xs text-gray-500 mb-4">Tambahkan pilihan seperti level pedas, ukuran, atau topping.</p>
-                <input type="text" name="ukuran" placeholder="Contoh: Ukuran"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white mb-3"
-                    value="{{ old('ukuran', $menu->ukuran) }}" />
-                <input type="text" name="variant" placeholder="Contoh: Rasa"
-                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
-                    value="{{ old('variant', $menu->variant) }}" />
-                <button type="button"
-                    class="mt-3 w-full bg-gray-800 text-white font-medium py-3 rounded-lg hover:bg-gray-900 transition">
-                    Tambah
-                </button>
+                <h3 class="text-sm font-semibold text-gray-900 mb-1">Tambahkan Varian & Rasa (Opsional)</h3>
+                <p class="text-xs text-gray-500 mb-4">Tambahkan pilihan seperti ukuran, atau rasa. Kosongkan jika tidak perlu.</p>
+                
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-gray-700 mb-2">Varian (Contoh: Ukuran, Level Pedas)</label>
+                    <div id="ukuran-list" class="space-y-2">
+                        @foreach($ukuranList as $uk)
+                        <div class="flex space-x-2">
+                            <input type="text" name="ukuran[]" placeholder="Contoh: Besar"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
+                                value="{{ $uk }}" />
+                            <button type="button" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition flex-shrink-0" onclick="this.parentElement.remove()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        @endforeach
+                    </div>
+                    <button type="button" id="btn-add-ukuran" class="mt-2 text-sm text-indigo-600 font-medium hover:text-indigo-800">+ Tambah Varian</button>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-2">Rasa (Contoh: Coklat, Keju)</label>
+                    <div id="variant-list" class="space-y-2">
+                        @foreach($variantList as $vr)
+                        <div class="flex space-x-2">
+                            <input type="text" name="variant[]" placeholder="Contoh: Coklat"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white"
+                                value="{{ $vr }}" />
+                            <button type="button" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition flex-shrink-0" onclick="this.parentElement.remove()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        @endforeach
+                    </div>
+                    <button type="button" id="btn-add-variant" class="mt-2 text-sm text-indigo-600 font-medium hover:text-indigo-800">+ Tambah Rasa</button>
+                </div>
             </div>
 
             <!-- Buttons -->
@@ -164,5 +206,34 @@
         const removeFlag = document.getElementById('remove-image-flag');
         if (removeFlag) removeFlag.value = '1';
     }
+
+    // Script for dynamic inputs
+    document.getElementById('btn-add-ukuran').addEventListener('click', function() {
+        const container = document.getElementById('ukuran-list');
+        const newItem = document.createElement('div');
+        newItem.className = 'flex space-x-2';
+        newItem.innerHTML = `
+            <input type="text" name="ukuran[]" placeholder="Contoh: Besar"
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white" />
+            <button type="button" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition flex-shrink-0" onclick="this.parentElement.remove()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        `;
+        container.appendChild(newItem);
+    });
+
+    document.getElementById('btn-add-variant').addEventListener('click', function() {
+        const container = document.getElementById('variant-list');
+        const newItem = document.createElement('div');
+        newItem.className = 'flex space-x-2';
+        newItem.innerHTML = `
+            <input type="text" name="variant[]" placeholder="Contoh: Coklat"
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:bg-white" />
+            <button type="button" class="px-3 py-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition flex-shrink-0" onclick="this.parentElement.remove()">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        `;
+        container.appendChild(newItem);
+    });
 </script>
 </x-layouts.public>
