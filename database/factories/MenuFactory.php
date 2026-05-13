@@ -19,7 +19,7 @@ class MenuFactory extends Factory{
             'slug' => Str::slug($name . '-' . fake()->unique()->numerify('####')),
             'category' => fake()->randomElement(['Makanan Utama', 'Minuman', 'Camilan', 'Dessert']),
             'description' => fake()->sentence(),
-            'image' => null,
+            'image' => 'menu_images/baso.jfif',
             'ukuran' => fake()->randomElement(['Kecil', 'Sedang', 'Besar', 'Reguler', 'Large']),
             'variant' => fake()->randomElement(['Original', 'Pedas', 'Manis', 'Asin', 'Dingin', 'Panas']),
             'price' => fake()->numberBetween(5000, 75000),
