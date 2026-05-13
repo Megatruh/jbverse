@@ -1,9 +1,25 @@
 <x-layouts.public>
-    <div class="min-h-screen bg-white">
+    <x-slot name="navbarLogo">
+        <div class="flex items-center h-full">
+        <a href="{{ route('pengusaha.menu.index') }}"
+            class="flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/20 transition mr-2"
+            title="Kembali">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        <div>
+                {{-- <p class="text-[10px] text-indigo-300 font-medium uppercase tracking-widest leading-none">Pengusaha</p> --}}
+                <p class="text-base font-bold text-white leading-tight">Edit Menu</p>
+            </div>
+        </div>
+    </x-slot>
+    {{-- <div class="min-h-screen bg-white">
         <x-pengusaha-header
             title="Edit Menu"
             backUrl="{{ route('pengusaha.menu.index') }}"
-        />
+        /> --}}
 
         <!-- Content -->
         <form action="{{ route('pengusaha.menu.update', $menu) }}" method="POST" enctype="multipart/form-data"
