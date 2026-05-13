@@ -18,10 +18,10 @@
 
         <!-- Kontainer Utama -->
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-200">
-            <div class="p-6 text-gray-900 border-b border-gray-200 mb-4 bg-gray-50">
+            {{-- <div class="p-6 text-gray-900 border-b border-gray-200 mb-4 bg-gray-50">
                 <p class="text-sm text-gray-600">Tinjau dan tindak lanjuti laporan dari pengunjung terkait UMKM di bawah ini.
                 </p>
-            </div>
+            </div> --}}
 
             <div class="overflow-x-auto pb-4">
                 <table class="min-w-full divide-y divide-gray-200">

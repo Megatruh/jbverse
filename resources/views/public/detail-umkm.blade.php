@@ -38,7 +38,16 @@
                     <div class="mt-5 block gap-x-6 gap-y-3 text-sm">
                         {{-- Lokasi / Alamat --}}
                         <div class="my-1 flex items-center gap-1 text-gray-600">
-                            <x-heroicon-o-map-pin class="w-4 h-4 text-gray-600" />
+                            {{-- <x-heroicon-o-map-pin class="w-4 h-4 text-gray-600" /> --}}
+                              <div class="flex items-center">
+                        @if ($umkm->latitude && $umkm->longitude)
+                            <a href="https://www.google.com/maps?q={{ $umkm->latitude }},{{ $umkm->longitude }}"
+                                target="_blank"
+                                class="shrink-0 inline-flex gap-1.5 px-3 py-1.5 text-xs transition-all active:scale-95 cursorpointer"
+                                title="Cek Lokasi di Google Maps">
+                                <x-heroicon-o-map-pin class="w-4 h-4 text-gray-900" />
+                            </a>
+                        @endif
                             <span>{{ $umkm->address ?? 'Alamat tidak tersedia' }}</span>
                         </div>
 
